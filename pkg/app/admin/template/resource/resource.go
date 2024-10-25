@@ -115,6 +115,12 @@ func (p *Template) RouteInit() interface{} {
 	return p
 }
 
+// 自定义路由
+func (p *Template) Route() interface{} {
+	// p.GET("/api/admin/:resource/demo", p.Demo)
+	return p
+}
+
 // 获取Model结构体
 func (p *Template) GetModel() interface{} {
 	return p.Model
