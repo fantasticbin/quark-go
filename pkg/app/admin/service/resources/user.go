@@ -85,21 +85,21 @@ func (p *User) Fields(ctx *builder.Context) []interface{} {
 		field.Text("username", "用户名", func() interface{} {
 			return "<a href='#/layout/index?api=/api/admin/user/edit&id=" + strconv.Itoa(p.Field["id"].(int)) + "'>" + p.Field["username"].(string) + "</a>"
 		}).
-			SetRules([]*rule.Rule{
-				rule.Required(true, "用户名必须填写"),
+			SetRules([]rule.Rule{
+				rule.Required("用户名必须填写"),
 				rule.Min(6, "用户名不能少于6个字符"),
 				rule.Max(20, "用户名不能超过20个字符"),
 			}).
-			SetCreationRules([]*rule.Rule{
+			SetCreationRules([]rule.Rule{
 				rule.Unique("users", "username", "用户名已存在"),
 			}).
-			SetUpdateRules([]*rule.Rule{
+			SetUpdateRules([]rule.Rule{
 				rule.Unique("users", "username", "{id}", "用户名已存在"),
 			}),
 		field.Text("nickname", "昵称").
 			SetEditable(true).
-			SetRules([]*rule.Rule{
-				rule.Required(true, "昵称必须填写"),
+			SetRules([]rule.Rule{
+				rule.Required("昵称必须填写"),
 			}),
 		field.Checkbox("role_ids", "角色").
 			SetOptions(roles).
@@ -114,30 +114,30 @@ func (p *User) Fields(ctx *builder.Context) []interface{} {
 			OnlyOnForms().
 			HideWhenImporting(true),
 		field.Text("email", "邮箱").
-			SetRules([]*rule.Rule{
-				rule.Required(true, "邮箱必须填写"),
+			SetRules([]rule.Rule{
+				rule.Required("邮箱必须填写"),
 				rule.Email("邮箱格式错误"),
 			}).
-			SetCreationRules([]*rule.Rule{
+			SetCreationRules([]rule.Rule{
 				rule.Unique("admins", "email", "邮箱已存在"),
 			}).
-			SetUpdateRules([]*rule.Rule{
+			SetUpdateRules([]rule.Rule{
 				rule.Unique("admins", "email", "{id}", "邮箱已存在"),
 			}).OnlyOnForms(),
 		field.Text("phone", "手机号").
-			SetRules([]*rule.Rule{
-				rule.Required(true, "手机号必须填写"),
+			SetRules([]rule.Rule{
+				rule.Required("手机号必须填写"),
 				rule.Phone("手机号格式错误"),
 			}).
-			SetCreationRules([]*rule.Rule{
+			SetCreationRules([]rule.Rule{
 				rule.Unique("admins", "phone", "手机号已存在"),
 			}).
-			SetUpdateRules([]*rule.Rule{
+			SetUpdateRules([]rule.Rule{
 				rule.Unique("admins", "phone", "{id}", "手机号已存在"),
 			}),
 		field.Radio("sex", "性别").
-			SetRules([]*rule.Rule{
-				rule.Required(true, "请选择性别"),
+			SetRules([]rule.Rule{
+				rule.Required("请选择性别"),
 			}).
 			SetOptions([]radio.Option{
 				field.RadioOption("男", 1),
@@ -146,15 +146,15 @@ func (p *User) Fields(ctx *builder.Context) []interface{} {
 			SetFilters(true).
 			SetDefault(1),
 		field.Password("password", "密码").
-			SetCreationRules([]*rule.Rule{
-				rule.Required(true, "密码必须填写"),
+			SetCreationRules([]rule.Rule{
+				rule.Required("密码必须填写"),
 			}).
 			OnlyOnForms().
 			ShowOnImporting(true),
 		field.Datetime("last_login_time", "最后登录时间").OnlyOnIndex(),
 		field.Switch("status", "状态").
-			SetRules([]*rule.Rule{
-				rule.Required(true, "请选择状态"),
+			SetRules([]rule.Rule{
+				rule.Required("请选择状态"),
 			}).
 			SetTrueValue("正常").
 			SetFalseValue("禁用").

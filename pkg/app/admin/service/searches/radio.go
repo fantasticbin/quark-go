@@ -12,7 +12,7 @@ type RadioField struct {
 }
 
 // 下拉框
-func Radio(column string, name string, options []*radio.Option) *RadioField {
+func Radio(column string, name string, options []radio.Option) *RadioField {
 	field := &RadioField{}
 
 	field.Column = column

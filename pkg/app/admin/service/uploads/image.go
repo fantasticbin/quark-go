@@ -228,7 +228,7 @@ func (p *Image) Crop(ctx *builder.Context) error {
 	}
 	if fileInfo != nil {
 		// 更新数据库
-		(&model.Picture{}).UpdateById(pictureInfo.Id, &model.Picture{
+		(&model.Picture{}).UpdateById(pictureInfo.Id, model.Picture{
 			ObjType: "ADMIN",
 			ObjId:   adminInfo.Id,
 			Name:    fileInfo.Name,
@@ -258,7 +258,7 @@ func (p *Image) Crop(ctx *builder.Context) error {
 	}
 
 	// 更新数据库
-	(&model.Picture{}).UpdateById(pictureInfo.Id, &model.Picture{
+	(&model.Picture{}).UpdateById(pictureInfo.Id, model.Picture{
 		ObjType: "ADMIN",
 		ObjId:   adminInfo.Id,
 		Name:    result.Name,

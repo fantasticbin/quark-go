@@ -26,8 +26,8 @@ func New() *Rule {
 }
 
 // 转换前端验证规则，剔除前端不支持的unique
-func ConvertToFrontendRules(rules []*Rule) []*Rule {
-	var newRules []*Rule
+func ConvertToFrontendRules(rules []Rule) []Rule {
+	var newRules []Rule
 
 	for _, rule := range rules {
 		if rule.RuleType != "unique" {
@@ -39,91 +39,91 @@ func ConvertToFrontendRules(rules []*Rule) []*Rule {
 }
 
 // 必须设置 type：string 类型；为字符串最大长度；number 类型时为最大值；array 类型时为数组最大长度
-func Max(max int, message string) *Rule {
+func Max(max int, message string) Rule {
 	p := &Rule{}
 
-	return p.SetMax(max).SetMessage(message)
+	return *p.SetMax(max).SetMessage(message)
 }
 
 // 必须设置 type：string 类型为字符串最小长度；number 类型时为最小值；array 类型时为数组最小长度
-func Min(min int, message string) *Rule {
+func Min(min int, message string) Rule {
 	p := &Rule{}
 
-	return p.SetMin(min).SetMessage(message)
+	return *p.SetMin(min).SetMessage(message)
 }
 
 // 正则表达式匹配
-func Regexp(pattern string, message string) *Rule {
+func Regexp(pattern string, message string) Rule {
 	p := &Rule{}
 
-	return p.SetRegexp(pattern).SetMessage(message)
+	return *p.SetRegexp(pattern).SetMessage(message)
 }
 
 // 必须为字符串
-func String(message string) *Rule {
+func String(message string) Rule {
 	p := &Rule{}
 
-	return p.SetString().SetMessage(message)
+	return *p.SetString().SetMessage(message)
 }
 
 // 必须为数字
-func Number(message string) *Rule {
+func Number(message string) Rule {
 	p := &Rule{}
 
-	return p.SetNumber().SetMessage(message)
+	return *p.SetNumber().SetMessage(message)
 }
 
 // 必须为布尔类型
-func Boolean(message string) *Rule {
+func Boolean(message string) Rule {
 	p := &Rule{}
 
-	return p.SetBoolean().SetMessage(message)
+	return *p.SetBoolean().SetMessage(message)
 }
 
 // 必须为整型
-func Integer(message string) *Rule {
+func Integer(message string) Rule {
 	p := &Rule{}
 
-	return p.SetInteger().SetMessage(message)
+	return *p.SetInteger().SetMessage(message)
 }
 
 // 必须为浮点型
-func Float(message string) *Rule {
+func Float(message string) Rule {
 	p := &Rule{}
 
-	return p.SetFloat().SetMessage(message)
+	return *p.SetFloat().SetMessage(message)
 }
 
 // 必须为邮箱字段
-func Email(message string) *Rule {
+func Email(message string) Rule {
 	p := &Rule{}
 
-	return p.SetEmail().SetMessage(message)
+	return *p.SetEmail().SetMessage(message)
 }
 
 // 必须为链接
-func Url(message string) *Rule {
+func Url(message string) Rule {
 	p := &Rule{}
 
-	return p.SetUrl().SetMessage(message)
+	return *p.SetUrl().SetMessage(message)
 }
 
 // 必须为手机号
-func Phone(message string) *Rule {
+func Phone(message string) Rule {
 	p := &Rule{}
 
-	return p.SetPhone().SetMessage(message)
+	return *p.SetPhone().SetMessage(message)
 }
 
 // 是否为必选字段
-func Required(required bool, message string) *Rule {
+func Required(message string) Rule {
 	p := &Rule{}
 
-	return p.SetRequired().SetMessage(message)
+	return *p.SetRequired().SetMessage(message)
 }
 
 // 设置unique验证类型，插入数据时：Unique("admins", "username", "用户名已存在")，更新数据时：Unique("admins", "username", "{id}", "用户名已存在")
-func Unique(unique ...string) *Rule {
+func Unique(unique ...string) Rule {
 	var (
 		uniqueTable       string
 		uniqueTableField  string
@@ -151,7 +151,7 @@ func Unique(unique ...string) *Rule {
 
 	p.SetMessage(message)
 
-	return p
+	return *p
 }
 
 // 需要验证的字段名称

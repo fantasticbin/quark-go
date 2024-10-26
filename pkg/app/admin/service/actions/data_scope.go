@@ -91,8 +91,8 @@ func (p *DataScopeAction) Fields(ctx *builder.Context) []interface{} {
 					Value: 5,
 				},
 			}).
-			SetRules([]*rule.Rule{
-				rule.Required(true, "请选择数据范围"),
+			SetRules([]rule.Rule{
+				rule.Required("请选择数据范围"),
 			}).
 			SetDefault(1),
 

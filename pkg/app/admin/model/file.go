@@ -30,7 +30,7 @@ type File struct {
 }
 
 // 插入数据并返回ID
-func (model *File) InsertGetId(data *File) (id int, Error error) {
+func (model *File) InsertGetId(data File) (id int, Error error) {
 	err := db.Client.Create(&data).Error
 
 	return data.Id, err
@@ -92,7 +92,7 @@ func (model *File) GetPath(id interface{}) string {
 		}
 	}
 
-	file := &File{}
+	file := File{}
 	db.Client.Where("id", id).Where("status", 1).First(&file)
 	if file.Id != 0 {
 		path = file.Url
@@ -153,7 +153,7 @@ func (model *File) GetPaths(id interface{}) []string {
 
 // 获取Excel文件数据
 func (model *File) GetExcelData(fileId int) (data [][]interface{}, Error error) {
-	file := &File{}
+	file := File{}
 	err := db.Client.Where("id", fileId).Where("status", 1).First(&file).Error
 	if err != nil {
 		return data, err

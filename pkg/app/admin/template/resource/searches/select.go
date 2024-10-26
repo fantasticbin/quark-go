@@ -7,7 +7,7 @@ import (
 
 type Select struct {
 	Search
-	SelectOptions []*selectfield.Option
+	SelectOptions []selectfield.Option
 }
 
 // 初始化模板
@@ -17,15 +17,15 @@ func (p *Select) TemplateInit(ctx *builder.Context) interface{} {
 }
 
 // 设置Option
-func (p *Select) Option(label string, value interface{}) *selectfield.Option {
-	return &selectfield.Option{
+func (p *Select) Option(label string, value interface{}) selectfield.Option {
+	return selectfield.Option{
 		Value: value,
 		Label: label,
 	}
 }
 
 func (p *Select) Options(ctx *builder.Context) interface{} {
-	return []*selectfield.Option{}
+	return []selectfield.Option{}
 }
 
 // 单向联动,返回数据类型：map[string]string{"field": "you_want_load_field","api": "admin/resource_name/action/select-options"}

@@ -93,14 +93,14 @@ func (model *Picture) GetInfoById(id interface{}) (picture Picture, Error error)
 }
 
 // 根据id更新文件信息
-func (model *Picture) UpdateById(id interface{}, data *Picture) (Error error) {
+func (model *Picture) UpdateById(id interface{}, data Picture) (Error error) {
 	err := db.Client.Where("status = ?", 1).Where("id = ?", id).Updates(&data).Error
 
 	return err
 }
 
 // 根据hash查询文件信息
-func (model *Picture) GetInfoByHash(hash string) (picture *Picture, Error error) {
+func (model *Picture) GetInfoByHash(hash string) (picture Picture, Error error) {
 	err := db.Client.Where("status = ?", 1).Where("hash = ?", hash).First(&picture).Error
 
 	return picture, err
@@ -155,7 +155,7 @@ func (model *Picture) GetPath(id interface{}) string {
 		}
 	}
 
-	picture := &Picture{}
+	picture := Picture{}
 	db.Client.Where("id", id).Where("status", 1).First(&picture)
 	if picture.Id != 0 {
 		path = picture.Url

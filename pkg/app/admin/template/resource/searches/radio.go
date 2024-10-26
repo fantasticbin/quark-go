@@ -7,7 +7,7 @@ import (
 
 type Radio struct {
 	Search
-	RadioOptions []*radio.Option
+	RadioOptions []radio.Option
 }
 
 // 初始化模板
@@ -17,9 +17,9 @@ func (p *Radio) TemplateInit(ctx *builder.Context) interface{} {
 }
 
 // 设置Option
-func (p *Radio) Option(label string, value interface{}) *radio.Option {
+func (p *Radio) Option(label string, value interface{}) radio.Option {
 
-	return &radio.Option{
+	return radio.Option{
 		Value: value,
 		Label: label,
 	}

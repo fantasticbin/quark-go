@@ -38,7 +38,7 @@ func (p *Menu) Init(ctx *builder.Context) interface{} {
 
 // 字段
 func (p *Menu) Fields(ctx *builder.Context) []interface{} {
-	field := resource.Field{}
+	field := &resource.Field{}
 
 	// 权限列表
 	permissions, _ := (&model.Permission{}).DataSource()
@@ -51,12 +51,12 @@ func (p *Menu) Fields(ctx *builder.Context) []interface{} {
 		field.Hidden("pid", "PID").OnlyOnIndex(), // 列表读取且不展示的字段
 		field.Group([]interface{}{
 			field.Text("name", "名称").
-				SetRules([]*rule.Rule{
-					rule.Required(true, "名称必须填写"),
+				SetRules([]rule.Rule{
+					rule.Required("名称必须填写"),
 				}),
 			field.Text("guard_name", "守卫").
-				SetRules([]*rule.Rule{
-					rule.Required(true, "守卫必须填写"),
+				SetRules([]rule.Rule{
+					rule.Required("守卫必须填写"),
 				}).
 				SetDefault("admin").
 				OnlyOnForms(),
@@ -83,8 +83,8 @@ func (p *Menu) Fields(ctx *builder.Context) []interface{} {
 					field.RadioOption("菜单", 2),
 					field.RadioOption("按钮", 3),
 				}).
-				SetRules([]*rule.Rule{
-					rule.Required(true, "类型必须选择"),
+				SetRules([]rule.Rule{
+					rule.Required("类型必须选择"),
 				}).
 				SetDefault(1),
 			field.Switch("show", "显示").
@@ -97,8 +97,8 @@ func (p *Menu) Fields(ctx *builder.Context) []interface{} {
 			SetWhen("type", 1, func() interface{} {
 				return []interface{}{
 					field.Text("path", "路由").
-						SetRules([]*rule.Rule{
-							rule.Required(true, "路由必须填写"),
+						SetRules([]rule.Rule{
+							rule.Required("路由必须填写"),
 						}).
 						SetEditable(true).
 						SetHelp("前端路由").
@@ -117,8 +117,8 @@ func (p *Menu) Fields(ctx *builder.Context) []interface{} {
 						SetFalseValue("否").
 						SetDefault(false),
 					field.Text("path", "路由").
-						SetRules([]*rule.Rule{
-							rule.Required(true, "路由必须填写"),
+						SetRules([]rule.Rule{
+							rule.Required("路由必须填写"),
 						}).
 						SetEditable(true).
 						SetHelp("前端路由或后端api").

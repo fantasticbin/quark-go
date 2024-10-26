@@ -67,10 +67,10 @@ type Component struct {
 
 	Api            string          `json:"api,omitempty"` // 获取数据接口
 	Ignore         bool            `json:"ignore"`        // 是否忽略保存到数据库，默认为 false
-	Rules          []*rule.Rule    `json:"-"`             // 全局校验规则
-	CreationRules  []*rule.Rule    `json:"-"`             // 创建页校验规则
-	UpdateRules    []*rule.Rule    `json:"-"`             // 编辑页校验规则
-	FrontendRules  []*rule.Rule    `json:"frontendRules"` // 前端校验规则，设置字段的校验逻辑
+	Rules          []rule.Rule     `json:"-"`             // 全局校验规则
+	CreationRules  []rule.Rule     `json:"-"`             // 创建页校验规则
+	UpdateRules    []rule.Rule     `json:"-"`             // 编辑页校验规则
+	FrontendRules  []rule.Rule     `json:"frontendRules"` // 前端校验规则，设置字段的校验逻辑
 	When           *when.Component `json:"when"`          //
 	WhenItem       []*when.Item    `json:"-"`             //
 	ShowOnIndex    bool            `json:"-"`             // 在列表页展示
@@ -92,7 +92,7 @@ type Component struct {
 	PopupClassName          string                 `json:"popupClassName,omitempty"`          // 自定义类名
 	ExpandIcon              interface{}            `json:"expandIcon,omitempty"`              // 自定义次级菜单展开图标
 	ExpandTrigger           string                 `json:"expandTrigger,omitempty"`           // 次级菜单的展开方式，可选 'click' 和 'hover'
-	FieldNames              *FieldNames            `json:"fieldNames,omitempty"`              // 自定义 options 中 label value children 的字段
+	FieldNames              FieldNames             `json:"fieldNames,omitempty"`              // 自定义 options 中 label value children 的字段
 	MaxTagCount             int                    `json:"maxTagCount,omitempty"`             // 最多显示多少个 tag，响应式模式会对性能产生损耗
 	MaxTagPlaceholder       string                 `json:"maxTagPlaceholder,omitempty"`       // 隐藏 tag 时显示的内容
 	MaxTagTextLength        int                    `json:"maxTagTextLength,omitempty"`        // 最大显示的 tag 文本长度
@@ -263,10 +263,10 @@ func (p *Component) SetRequired() *Component {
 // 生成前端验证规则
 func (p *Component) BuildFrontendRules(path string) interface{} {
 	var (
-		frontendRules []*rule.Rule
-		rules         []*rule.Rule
-		creationRules []*rule.Rule
-		updateRules   []*rule.Rule
+		frontendRules []rule.Rule
+		rules         []rule.Rule
+		creationRules []rule.Rule
+		updateRules   []rule.Rule
 	)
 
 	uri := strings.Split(path, "/")
@@ -304,9 +304,10 @@ func (p *Component) BuildFrontendRules(path string) interface{} {
 //		rule.Min(6, "用户名不能少于6个字符"),
 //		rule.Max(20, "用户名不能超过20个字符"),
 //	}
-func (p *Component) SetRules(rules []*rule.Rule) *Component {
+func (p *Component) SetRules(rules []rule.Rule) *Component {
 	for k, v := range rules {
-		rules[k] = v.SetName(p.Name)
+		v.Name = p.Name
+		rules[k] = v
 	}
 	p.Rules = rules
 
@@ -315,12 +316,13 @@ func (p *Component) SetRules(rules []*rule.Rule) *Component {
 
 // 校验规则，只在创建表单提交时生效
 //
-//	[]*rule.Rule{
+//	[]rule.Rule{
 //		rule.Unique("admins", "username", "用户名已存在"),
 //	}
-func (p *Component) SetCreationRules(rules []*rule.Rule) *Component {
+func (p *Component) SetCreationRules(rules []rule.Rule) *Component {
 	for k, v := range rules {
-		rules[k] = v.SetName(p.Name)
+		v.Name = p.Name
+		rules[k] = v
 	}
 	p.CreationRules = rules
 
@@ -329,12 +331,13 @@ func (p *Component) SetCreationRules(rules []*rule.Rule) *Component {
 
 // 校验规则，只在更新表单提交时生效
 //
-//	[]*rule.Rule{
+//	[]rule.Rule{
 //		rule.Unique("admins", "username", "{id}", "用户名已存在"),
 //	}
-func (p *Component) SetUpdateRules(rules []*rule.Rule) *Component {
+func (p *Component) SetUpdateRules(rules []rule.Rule) *Component {
 	for k, v := range rules {
-		rules[k] = v.SetName(p.Name)
+		v.Name = p.Name
+		rules[k] = v
 	}
 	p.UpdateRules = rules
 
@@ -342,19 +345,19 @@ func (p *Component) SetUpdateRules(rules []*rule.Rule) *Component {
 }
 
 // 获取全局验证规则
-func (p *Component) GetRules() []*rule.Rule {
+func (p *Component) GetRules() []rule.Rule {
 
 	return p.Rules
 }
 
 // 获取创建表单验证规则
-func (p *Component) GetCreationRules() []*rule.Rule {
+func (p *Component) GetCreationRules() []rule.Rule {
 
 	return p.CreationRules
 }
 
 // 获取更新表单验证规则
-func (p *Component) GetUpdateRules() []*rule.Rule {
+func (p *Component) GetUpdateRules() []rule.Rule {
 
 	return p.UpdateRules
 }
@@ -858,7 +861,7 @@ func (p *Component) SetExpandTrigger(expandTrigger string) *Component {
 }
 
 // 自定义 options 中 label value children 的字段
-func (p *Component) SetFieldNames(fieldNames *FieldNames) *Component {
+func (p *Component) SetFieldNames(fieldNames FieldNames) *Component {
 	p.FieldNames = fieldNames
 
 	return p

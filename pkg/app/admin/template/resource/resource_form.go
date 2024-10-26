@@ -132,7 +132,7 @@ func (p *Template) BeforeFormShowing(ctx *builder.Context) map[string]interface{
 
 // 表单执行
 func (p *Template) FormHandle(ctx *builder.Context, query *gorm.DB, data map[string]interface{}) (err error) {
-	return (&requests.StoreRequest{}).Handle(ctx)
+	return (&requests.StoreRequest{}).Handle(ctx, data)
 }
 
 // 保存数据前回调

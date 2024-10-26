@@ -85,7 +85,7 @@ func (p *File) AfterHandle(ctx *builder.Context, result *storage.FileInfo) error
 	}
 
 	// 插入数据库
-	id, err := (&model.File{}).InsertGetId(&model.File{
+	id, err := (&model.File{}).InsertGetId(model.File{
 		Name:   result.Name,
 		Size:   result.Size,
 		Ext:    result.Ext,

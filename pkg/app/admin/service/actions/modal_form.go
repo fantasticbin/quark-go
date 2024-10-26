@@ -49,8 +49,8 @@ func (p *ModalFormAction) Fields(ctx *builder.Context) []interface{} {
 		field.Text("id", "ID"),
 
 		field.Text("name", "名称").
-			SetRules([]*rule.Rule{
-				rule.Required(true, "名称必须填写"),
+			SetRules([]rule.Rule{
+				rule.Required("名称必须填写"),
 			}),
 	}
 }

@@ -182,7 +182,7 @@ func (p *Template) fieldToColumn(ctx *builder.Context, field interface{}) interf
 	case "treeSelectField":
 
 		// 获取属性
-		options = field.(interface{ GetOptions() []*treeselect.TreeData }).GetOptions()
+		options = field.(interface{ GetOptions() []treeselect.TreeData }).GetOptions()
 
 		// 设置表格列
 		column = column.
@@ -192,7 +192,7 @@ func (p *Template) fieldToColumn(ctx *builder.Context, field interface{}) interf
 			})
 	case "cascaderField":
 		// 获取属性
-		options = field.(interface{ GetOptions() []*cascader.Option }).GetOptions()
+		options = field.(interface{ GetOptions() []cascader.Option }).GetOptions()
 
 		// 设置表格列
 		column = column.
@@ -202,7 +202,7 @@ func (p *Template) fieldToColumn(ctx *builder.Context, field interface{}) interf
 			})
 	case "selectField":
 		// 获取属性
-		options = field.(interface{ GetOptions() []*selectfield.Option }).GetOptions()
+		options = field.(interface{ GetOptions() []selectfield.Option }).GetOptions()
 
 		// 设置表格列
 		column = column.
@@ -223,7 +223,7 @@ func (p *Template) fieldToColumn(ctx *builder.Context, field interface{}) interf
 		}
 	case "checkboxField":
 		// 获取属性
-		options = field.(interface{ GetOptions() []*checkbox.Option }).GetOptions()
+		options = field.(interface{ GetOptions() []checkbox.Option }).GetOptions()
 
 		// 设置表格列
 		column = column.
@@ -244,7 +244,7 @@ func (p *Template) fieldToColumn(ctx *builder.Context, field interface{}) interf
 		}
 	case "radioField":
 		// 获取属性
-		options = field.(interface{ GetOptions() []*radio.Option }).GetOptions()
+		options = field.(interface{ GetOptions() []radio.Option }).GetOptions()
 
 		// 设置表格列
 		column = column.

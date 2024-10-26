@@ -36,18 +36,18 @@ func (p *Config) Fields(ctx *builder.Context) []interface{} {
 	return []interface{}{
 		field.ID("id", "ID"),
 		field.Text("title", "标题").
-			SetRules([]*rule.Rule{
-				rule.Required(true, "标题必须填写"),
+			SetRules([]rule.Rule{
+				rule.Required("标题必须填写"),
 			}),
 		field.Text("name", "名称").
 			SetEditable(true).
-			SetRules([]*rule.Rule{
-				rule.Required(true, "名称必须填写"),
+			SetRules([]rule.Rule{
+				rule.Required("名称必须填写"),
 			}).
-			SetCreationRules([]*rule.Rule{
+			SetCreationRules([]rule.Rule{
 				rule.Unique("configs", "name", "名称已存在"),
 			}).
-			SetUpdateRules([]*rule.Rule{
+			SetUpdateRules([]rule.Rule{
 				rule.Unique("configs", "name", "{id}", "名称已存在"),
 			}),
 		field.Radio("type", "表单类型").
@@ -66,8 +66,8 @@ func (p *Config) Fields(ctx *builder.Context) []interface{} {
 			SetHelp("值越小越靠前").
 			OnlyOnForms(),
 		field.Text("group_name", "分组名称").
-			SetRules([]*rule.Rule{
-				rule.Required(true, "分组名称必须填写"),
+			SetRules([]rule.Rule{
+				rule.Required("分组名称必须填写"),
 			}).OnlyOnForms(),
 		field.Text("remark", "备注").
 			OnlyOnForms(),

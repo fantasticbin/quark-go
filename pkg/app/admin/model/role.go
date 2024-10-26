@@ -47,7 +47,7 @@ func (model *Role) UpdateRoleDataScope(roleId int, dataScope int, departmentIds 
 }
 
 // 获取角色列表
-func (model *Role) List() (list []*checkbox.Option, Error error) {
+func (model *Role) List() (list []checkbox.Option, Error error) {
 	roles := []Role{}
 	err := db.Client.Find(&roles).Error
 	if err != nil {
@@ -55,7 +55,7 @@ func (model *Role) List() (list []*checkbox.Option, Error error) {
 	}
 
 	for _, v := range roles {
-		list = append(list, &checkbox.Option{
+		list = append(list, checkbox.Option{
 			Label: v.Name,
 			Value: v.Id,
 		})

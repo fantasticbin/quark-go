@@ -32,7 +32,7 @@ func (p *Template) ValidatorForCreation(ctx *builder.Context, data map[string]in
 }
 
 // 验证规则
-func (p *Template) Validator(rules []*rule.Rule, data map[string]interface{}) error {
+func (p *Template) Validator(rules []rule.Rule, data map[string]interface{}) error {
 	var result error
 
 	for _, rule := range rules {
@@ -99,7 +99,7 @@ func (p *Template) Validator(rules []*rule.Rule, data map[string]interface{}) er
 }
 
 // 创建请求的验证规则
-func (p *Template) RulesForCreation(ctx *builder.Context) (rules []*rule.Rule) {
+func (p *Template) RulesForCreation(ctx *builder.Context) (rules []rule.Rule) {
 	fields := ctx.Template.(interface {
 		CreationFieldsWithoutWhen(*builder.Context) interface{}
 	}).CreationFieldsWithoutWhen(ctx)
@@ -201,15 +201,15 @@ func (p *Template) needValidateWhenRules(ctx *builder.Context, when *when.Item) 
 }
 
 // 获取创建请求资源规则
-func (p *Template) getRulesForCreation(field interface{}) (rules []*rule.Rule) {
+func (p *Template) getRulesForCreation(field interface{}) (rules []rule.Rule) {
 	if v, ok := field.(interface {
-		GetRules() []*rule.Rule
+		GetRules() []rule.Rule
 	}); ok {
 		rules = append(rules, v.GetRules()...)
 	}
 
 	if v, ok := field.(interface {
-		GetCreationRules() []*rule.Rule
+		GetCreationRules() []rule.Rule
 	}); ok {
 		rules = append(rules, v.GetCreationRules()...)
 	}
@@ -236,7 +236,7 @@ func (p *Template) ValidatorForUpdate(ctx *builder.Context, data map[string]inte
 }
 
 // 更新请求的验证规则
-func (p *Template) RulesForUpdate(ctx *builder.Context) (rules []*rule.Rule) {
+func (p *Template) RulesForUpdate(ctx *builder.Context) (rules []rule.Rule) {
 	fields := ctx.Template.(interface {
 		UpdateFieldsWithoutWhen(*builder.Context) interface{}
 	}).UpdateFieldsWithoutWhen(ctx)
@@ -278,15 +278,15 @@ func (p *Template) RulesForUpdate(ctx *builder.Context) (rules []*rule.Rule) {
 }
 
 // 获取更新请求资源规则
-func (p *Template) getRulesForUpdate(field interface{}) (rules []*rule.Rule) {
+func (p *Template) getRulesForUpdate(field interface{}) (rules []rule.Rule) {
 	if v, ok := field.(interface {
-		GetRules() []*rule.Rule
+		GetRules() []rule.Rule
 	}); ok {
 		rules = append(rules, v.GetRules()...)
 	}
 
 	if v, ok := field.(interface {
-		GetUpdateRules() []*rule.Rule
+		GetUpdateRules() []rule.Rule
 	}); ok {
 		rules = append(rules, v.GetUpdateRules()...)
 	}
@@ -313,7 +313,7 @@ func (p *Template) ValidatorForImport(ctx *builder.Context, data map[string]inte
 }
 
 // 创建请求的验证规则
-func (p *Template) RulesForImport(ctx *builder.Context) (rules []*rule.Rule) {
+func (p *Template) RulesForImport(ctx *builder.Context) (rules []rule.Rule) {
 
 	fields := ctx.Template.(interface {
 		ImportFieldsWithoutWhen(*builder.Context) interface{}

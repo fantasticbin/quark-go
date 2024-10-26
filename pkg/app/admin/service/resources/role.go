@@ -42,8 +42,8 @@ func (p *Role) Fields(ctx *builder.Context) []interface{} {
 	return []interface{}{
 		field.ID("id", "ID"),
 		field.Text("name", "名称").
-			SetRules([]*rule.Rule{
-				rule.Required(true, "名称必须填写"),
+			SetRules([]rule.Rule{
+				rule.Required("名称必须填写"),
 			}),
 		field.Text("guard_name", "守卫").
 			SetDefault("admin"),

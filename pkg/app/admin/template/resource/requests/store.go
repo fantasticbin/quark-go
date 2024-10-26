@@ -15,9 +15,7 @@ import (
 type StoreRequest struct{}
 
 // 执行行为
-func (p *StoreRequest) Handle(ctx *builder.Context) error {
-	data := map[string]interface{}{}
-	ctx.Bind(&data)
+func (p *StoreRequest) Handle(ctx *builder.Context, data map[string]interface{}) error {
 
 	// 模版实例
 	template := ctx.Template.(types.Resourcer)

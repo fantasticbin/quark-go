@@ -49,10 +49,10 @@ type Component struct {
 
 	Api            string          `json:"api,omitempty"` // 获取数据接口
 	Ignore         bool            `json:"ignore"`        // 是否忽略保存到数据库，默认为 false
-	Rules          []*rule.Rule    `json:"-"`             // 全局校验规则
-	CreationRules  []*rule.Rule    `json:"-"`             // 创建页校验规则
-	UpdateRules    []*rule.Rule    `json:"-"`             // 编辑页校验规则
-	FrontendRules  []*rule.Rule    `json:"frontendRules"` // 前端校验规则，设置字段的校验逻辑
+	Rules          []rule.Rule     `json:"-"`             // 全局校验规则
+	CreationRules  []rule.Rule     `json:"-"`             // 创建页校验规则
+	UpdateRules    []rule.Rule     `json:"-"`             // 编辑页校验规则
+	FrontendRules  []rule.Rule     `json:"frontendRules"` // 前端校验规则，设置字段的校验逻辑
 	When           *when.Component `json:"when"`          //
 	WhenItem       []*when.Item    `json:"-"`             //
 	ShowOnIndex    bool            `json:"-"`             // 在列表页展示
@@ -233,10 +233,10 @@ func (p *Component) SetRequired() *Component {
 // 生成前端验证规则
 func (p *Component) BuildFrontendRules(path string) interface{} {
 	var (
-		frontendRules []*rule.Rule
-		rules         []*rule.Rule
-		creationRules []*rule.Rule
-		UpdateRules   []*rule.Rule
+		frontendRules []rule.Rule
+		rules         []rule.Rule
+		creationRules []rule.Rule
+		updateRules   []rule.Rule
 	)
 
 	uri := strings.Split(path, "/")
@@ -250,7 +250,7 @@ func (p *Component) BuildFrontendRules(path string) interface{} {
 		creationRules = rule.ConvertToFrontendRules(p.CreationRules)
 	}
 	if isEditing && len(p.UpdateRules) > 0 {
-		UpdateRules = rule.ConvertToFrontendRules(p.UpdateRules)
+		updateRules = rule.ConvertToFrontendRules(p.UpdateRules)
 	}
 	if len(rules) > 0 {
 		frontendRules = append(frontendRules, rules...)
@@ -258,8 +258,8 @@ func (p *Component) BuildFrontendRules(path string) interface{} {
 	if len(creationRules) > 0 {
 		frontendRules = append(frontendRules, creationRules...)
 	}
-	if len(UpdateRules) > 0 {
-		frontendRules = append(frontendRules, UpdateRules...)
+	if len(updateRules) > 0 {
+		frontendRules = append(frontendRules, updateRules...)
 	}
 
 	p.FrontendRules = frontendRules
@@ -274,9 +274,10 @@ func (p *Component) BuildFrontendRules(path string) interface{} {
 //		rule.Min(6, "用户名不能少于6个字符"),
 //		rule.Max(20, "用户名不能超过20个字符"),
 //	}
-func (p *Component) SetRules(rules []*rule.Rule) *Component {
+func (p *Component) SetRules(rules []rule.Rule) *Component {
 	for k, v := range rules {
-		rules[k] = v.SetName(p.Name)
+		v.Name = p.Name
+		rules[k] = v
 	}
 	p.Rules = rules
 
@@ -285,12 +286,13 @@ func (p *Component) SetRules(rules []*rule.Rule) *Component {
 
 // 校验规则，只在创建表单提交时生效
 //
-//	[]*rule.Rule{
+//	[]rule.Rule{
 //		rule.Unique("admins", "username", "用户名已存在"),
 //	}
-func (p *Component) SetCreationRules(rules []*rule.Rule) *Component {
+func (p *Component) SetCreationRules(rules []rule.Rule) *Component {
 	for k, v := range rules {
-		rules[k] = v.SetName(p.Name)
+		v.Name = p.Name
+		rules[k] = v
 	}
 	p.CreationRules = rules
 
@@ -302,9 +304,10 @@ func (p *Component) SetCreationRules(rules []*rule.Rule) *Component {
 //	[]*rule.Rule{
 //		rule.Unique("admins", "username", "{id}", "用户名已存在"),
 //	}
-func (p *Component) SetUpdateRules(rules []*rule.Rule) *Component {
+func (p *Component) SetUpdateRules(rules []rule.Rule) *Component {
 	for k, v := range rules {
-		rules[k] = v.SetName(p.Name)
+		v.Name = p.Name
+		rules[k] = v
 	}
 	p.UpdateRules = rules
 
@@ -312,19 +315,19 @@ func (p *Component) SetUpdateRules(rules []*rule.Rule) *Component {
 }
 
 // 获取全局验证规则
-func (p *Component) GetRules() []*rule.Rule {
+func (p *Component) GetRules() []rule.Rule {
 
 	return p.Rules
 }
 
 // 获取创建表单验证规则
-func (p *Component) GetCreationRules() []*rule.Rule {
+func (p *Component) GetCreationRules() []rule.Rule {
 
 	return p.CreationRules
 }
 
 // 获取更新表单验证规则
-func (p *Component) GetUpdateRules() []*rule.Rule {
+func (p *Component) GetUpdateRules() []rule.Rule {
 
 	return p.UpdateRules
 }

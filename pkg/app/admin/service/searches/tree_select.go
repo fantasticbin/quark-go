@@ -12,7 +12,7 @@ type TreeSelectField struct {
 }
 
 // 树形下拉框
-func TreeSelect(column string, name string, options []*treeselect.TreeData) *TreeSelectField {
+func TreeSelect(column string, name string, options []treeselect.TreeData) *TreeSelectField {
 	field := &TreeSelectField{}
 
 	field.Column = column

@@ -49,23 +49,23 @@ func (p *Department) Fields(ctx *builder.Context) []interface{} {
 		field.Hidden("id", "ID"),                 // 列表读取且不展示的字段
 		field.Hidden("pid", "PID").OnlyOnIndex(), // 列表读取且不展示的字段
 		field.Text("name", "名称").
-			SetRules([]*rule.Rule{
-				rule.Required(true, "名称必须填写"),
+			SetRules([]rule.Rule{
+				rule.Required("名称必须填写"),
 				rule.Min(2, "名称不能少于2个字符"),
 				rule.Max(100, "名称不能超过100个字符"),
 			}),
 		field.TreeSelect("pid", "父节点").
 			SetTreeData(departments, "pid", "name", "id").
-			SetRules([]*rule.Rule{
-				rule.Required(true, "请选择父节点"),
+			SetRules([]rule.Rule{
+				rule.Required("请选择父节点"),
 			}).
 			SetDefault(1).
 			OnlyOnCreating(),
 		field.Dependency().SetWhen("id", "!=", 1, func() interface{} {
 			return field.TreeSelect("pid", "父节点").
 				SetTreeData(departments, "pid", "name", "id").
-				SetRules([]*rule.Rule{
-					rule.Required(true, "请选择父节点"),
+				SetRules([]rule.Rule{
+					rule.Required("请选择父节点"),
 				}).
 				SetDefault(1).
 				OnlyOnUpdating()
@@ -74,8 +74,8 @@ func (p *Department) Fields(ctx *builder.Context) []interface{} {
 			SetEditable(true).
 			SetDefault(0),
 		field.Switch("status", "状态").
-			SetRules([]*rule.Rule{
-				rule.Required(true, "请选择状态"),
+			SetRules([]rule.Rule{
+				rule.Required("请选择状态"),
 			}).
 			SetTrueValue("正常").
 			SetFalseValue("禁用").

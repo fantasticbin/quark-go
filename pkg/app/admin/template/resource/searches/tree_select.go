@@ -7,7 +7,7 @@ import (
 
 type TreeSelect struct {
 	Search
-	TreeSelectOptions []*treeselect.TreeData
+	TreeSelectOptions []treeselect.TreeData
 }
 
 // 初始化模板
@@ -18,9 +18,9 @@ func (p *TreeSelect) TemplateInit(ctx *builder.Context) interface{} {
 }
 
 // 设置Option
-func (p *TreeSelect) Option(title string, value interface{}) *treeselect.TreeData {
+func (p *TreeSelect) Option(title string, value interface{}) treeselect.TreeData {
 
-	return &treeselect.TreeData{
+	return treeselect.TreeData{
 		Value: value,
 		Title: title,
 	}

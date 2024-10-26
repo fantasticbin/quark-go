@@ -76,12 +76,12 @@ func (p *Template) IndexSearches(ctx *builder.Context) interface{} {
 			item = field.
 				Select(name, label).
 				SetWidth(nil).
-				SetOptions(options.([]*selectfield.Option)).
+				SetOptions(options.([]selectfield.Option)).
 				SetLoad(load["field"], load["api"])
 		case "radioField":
 			item = field.
 				Radio(name, label).
-				SetOptions(options.([]*radio.Option)).
+				SetOptions(options.([]radio.Option)).
 				SetOptionType("button").
 				SetButtonStyle("solid")
 		case "multipleSelectField":
@@ -89,7 +89,7 @@ func (p *Template) IndexSearches(ctx *builder.Context) interface{} {
 				Select(name, label).
 				SetMode("multiple").
 				SetWidth(nil).
-				SetOptions(options.([]*selectfield.Option))
+				SetOptions(options.([]selectfield.Option))
 		case "dateField":
 			item = field.
 				Date(name, label).
@@ -111,12 +111,12 @@ func (p *Template) IndexSearches(ctx *builder.Context) interface{} {
 				Cascader(name, label).
 				SetApi(api).
 				SetWidth(nil).
-				SetOptions(options.([]*cascader.Option))
+				SetOptions(options.([]cascader.Option))
 		case "treeSelectField":
 			item = field.
 				TreeSelect(name, label).
 				SetWidth(nil).
-				SetTreeData(options.([]*treeselect.TreeData))
+				SetTreeData(options.([]treeselect.TreeData))
 		}
 
 		search = search.SetItems(item)

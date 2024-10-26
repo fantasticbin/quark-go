@@ -12,7 +12,7 @@ type SelectField struct {
 }
 
 // 下拉框
-func Select(column string, name string, options []*selectfield.Option) *SelectField {
+func Select(column string, name string, options []selectfield.Option) *SelectField {
 	field := &SelectField{}
 
 	field.Column = column
