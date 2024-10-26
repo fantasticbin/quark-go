@@ -299,7 +299,7 @@ func (p *Component) BuildFrontendRules(path string) interface{} {
 
 // 校验规则，设置字段的校验逻辑
 //
-//	[]*rule.Rule{
+//	[]rule.Rule{
 //		rule.Required(true, "用户名必须填写"),
 //		rule.Min(6, "用户名不能少于6个字符"),
 //		rule.Max(20, "用户名不能超过20个字符"),
