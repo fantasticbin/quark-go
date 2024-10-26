@@ -65,7 +65,7 @@ func (model *Role) List() (list []*checkbox.Option, Error error) {
 }
 
 // 通过id集合获取列表
-func (model *Role) GetListByIds(ids interface{}) (roles []*Role, Error error) {
+func (model *Role) GetListByIds(ids interface{}) (roles []Role, Error error) {
 	err := db.Client.Where("id in ?", ids).Find(&roles).Error
 
 	return roles, err

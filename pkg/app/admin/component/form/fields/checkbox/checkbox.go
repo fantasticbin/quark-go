@@ -74,7 +74,7 @@ type Component struct {
 	DefaultValue interface{} `json:"defaultValue,omitempty"` // 默认选中的选项
 	Disabled     bool        `json:"disabled,omitempty"`     // 整组失效
 	Value        interface{} `json:"value,omitempty"`        // 指定选中项,string[] | number[]
-	Options      []*Option   `json:"options,omitempty"`      // 可选项数据源
+	Options      []Option    `json:"options,omitempty"`      // 可选项数据源
 }
 
 // 初始化组件
@@ -702,7 +702,7 @@ func (p *Component) IsShownOnImport() bool {
 }
 
 // 当前可选项
-func (p *Component) GetOptions() []*Option {
+func (p *Component) GetOptions() []Option {
 
 	return p.Options
 }
@@ -722,8 +722,8 @@ func (p *Component) GetCallback() interface{} {
 }
 
 // 使用反射构建树结构
-func (p *Component) buildOptions(items interface{}, labelName string, valueName string) []*Option {
-	var options []*Option
+func (p *Component) buildOptions(items interface{}, labelName string, valueName string) []Option {
+	var options []Option
 
 	v := reflect.ValueOf(items)
 
@@ -762,7 +762,7 @@ func (p *Component) buildOptions(items interface{}, labelName string, valueName 
 		label := labelField.String()
 
 		// 构建级联选择框的选项
-		option := &Option{
+		option := Option{
 			Value: value,
 			Label: label,
 		}
@@ -772,18 +772,18 @@ func (p *Component) buildOptions(items interface{}, labelName string, valueName 
 	return options
 }
 
-func (p *Component) ListToOptions(list interface{}, labelName string, valueName string) []*Option {
+func (p *Component) ListToOptions(list interface{}, labelName string, valueName string) []Option {
 	return p.buildOptions(list, labelName, valueName)
 }
 
-// 设置属性，示例：[]*checkbox.Option{{Value: 1, Label: "中国"}, {Value: 2, Label: "美国"}, {Value: 3, Label: "日本"}}
+// 设置属性，示例：[]checkbox.Option{{Value: 1, Label: "中国"}, {Value: 2, Label: "美国"}, {Value: 3, Label: "日本"}}
 //
 // 或者
 //
 // SetOptions(options, "label_name", "value_name")
 func (p *Component) SetOptions(options ...interface{}) *Component {
 	if len(options) == 1 {
-		getOptions, ok := options[0].([]*Option)
+		getOptions, ok := options[0].([]Option)
 		if ok {
 			p.Options = getOptions
 			return p

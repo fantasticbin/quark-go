@@ -13,8 +13,8 @@ type PictureCategory struct {
 }
 
 // 获取列表
-func (model *PictureCategory) GetAuthList(appKey string, tokenString string) (list []*PictureCategory, Error error) {
-	categorys := []*PictureCategory{}
+func (model *PictureCategory) GetAuthList(appKey string, tokenString string) (list []PictureCategory, Error error) {
+	categorys := []PictureCategory{}
 
 	adminInfo, err := (&User{}).GetAuthUser(appKey, tokenString)
 	if err != nil {

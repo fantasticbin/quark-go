@@ -20,8 +20,8 @@ type ActionLog struct {
 }
 
 // 插入数据
-func (model *ActionLog) InsertGetId(data *ActionLog) (id int, Error error) {
-	err := db.Client.Create(data).Error
+func (model *ActionLog) InsertGetId(data ActionLog) (id int, Error error) {
+	err := db.Client.Create(&data).Error
 
 	return data.Id, err
 }

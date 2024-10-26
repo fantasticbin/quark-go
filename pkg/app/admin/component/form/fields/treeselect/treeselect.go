@@ -23,7 +23,7 @@ type FieldNames struct {
 type TreeData struct {
 	Title           string      `json:"title"`
 	Value           interface{} `json:"value"`
-	Children        []*TreeData `json:"children,omitempty"`
+	Children        []TreeData  `json:"children,omitempty"`
 	Disabled        bool        `json:"disabled,omitempty"`
 	DisableCheckbox bool        `json:"disableCheckbox,omitempty"`
 	Selectable      bool        `json:"selectable,omitempty"`
@@ -89,7 +89,7 @@ type Component struct {
 	PopupClassName           string                 `json:"popupClassName,omitempty"`           // 下拉菜单的 className 属性
 	DropdownMatchSelectWidth interface{}            `json:"dropdownMatchSelectWidth,omitempty"` // 下拉菜单和选择器同宽。默认将设置 min-width，当值小于选择框宽度时会被忽略。false 时会关闭虚拟滚动
 	DropdownStyle            interface{}            `json:"dropdownStyle,omitempty"`            // 下拉菜单的 style 属性
-	FieldNames               *FieldNames            `json:"fieldNames,omitempty"`               // 自定义 options 中 label value children 的字段
+	FieldNames               FieldNames             `json:"fieldNames,omitempty"`               // 自定义 options 中 label value children 的字段
 	LabelInValue             bool                   `json:"labelInValue,omitempty"`             // 是否把每个选项的 label 包装到 value 中，会把 Select 的 value 类型从 string 变为 { value: string, label: ReactNode } 的格式
 	ListHeight               int                    `json:"listHeight,omitempty"`               // 设置弹窗滚动高度 256
 	MaxTagCount              int                    `json:"maxTagCount,omitempty"`              // 最多显示多少个 tag，响应式模式会对性能产生损耗
@@ -108,7 +108,7 @@ type Component struct {
 	SwitcherIcon             interface{}            `json:"switcherIcon,omitempty"`             // 自定义树节点的展开/折叠图标
 	TreeCheckable            bool                   `json:"treeCheckable,omitempty"`            // 显示 Checkbox
 	TreeCheckStrictly        bool                   `json:"treeCheckStrictly,omitempty"`        // checkable 状态下节点选择完全受控（父子节点选中状态不再关联），会使得 labelInValue 强制为 true
-	TreeData                 []*TreeData            `json:"treeData,omitempty"`                 // treeNodes 数据，如果设置则不需要手动构造 TreeNode 节点（value 在整个树范围内唯一）
+	TreeData                 []TreeData             `json:"treeData,omitempty"`                 // treeNodes 数据，如果设置则不需要手动构造 TreeNode 节点（value 在整个树范围内唯一）
 	TreeDataSimpleMode       interface{}            `json:"treeDataSimpleMode,omitempty"`       // 使用简单格式的 treeData，具体设置参考可设置的类型 (此时 treeData 应变为这样的数据结构: [{id:1, pId:0, value:'1', title:"test1",...},...]， pId 是父节点的 id)
 	TreeDefaultExpandAll     bool                   `json:"treeDefaultExpandAll,omitempty"`     // 默认展开所有树节点
 	TreeDefaultExpandedKeys  []interface{}          `json:"treeDefaultExpandedKeys,omitempty"`  // 默认展开的树节点
@@ -766,7 +766,7 @@ func (p *Component) IsShownOnImport() bool {
 }
 
 // 当前可选项
-func (p *Component) GetOptions() []*TreeData {
+func (p *Component) GetOptions() []TreeData {
 
 	return p.TreeData
 }
@@ -835,7 +835,7 @@ func (p *Component) SetDropdownStyle(dropdownStyle interface{}) *Component {
 }
 
 // 自定义 options 中 label value children 的字段
-func (p *Component) SetFieldNames(fieldNames *FieldNames) *Component {
+func (p *Component) SetFieldNames(fieldNames FieldNames) *Component {
 	p.FieldNames = fieldNames
 
 	return p
@@ -968,8 +968,8 @@ func (p *Component) SetTreeCheckStrictly(treeCheckStrictly bool) *Component {
 }
 
 // buildTree 使用反射构建树结构
-func (p *Component) buildTree(items interface{}, pid int, parentKeyName string, titleName string, valueName string) []*TreeData {
-	var tree []*TreeData
+func (p *Component) buildTree(items interface{}, pid int, parentKeyName string, titleName string, valueName string) []TreeData {
+	var tree []TreeData
 
 	// 通过反射获取切片的值
 	v := reflect.ValueOf(items)
@@ -1019,7 +1019,7 @@ func (p *Component) buildTree(items interface{}, pid int, parentKeyName string, 
 			children := p.buildTree(items, value, parentKeyName, titleName, valueName)
 
 			// 构建级联选择框的选项
-			option := &TreeData{
+			option := TreeData{
 				Value:    value,
 				Title:    title,
 				Children: children,
@@ -1031,13 +1031,13 @@ func (p *Component) buildTree(items interface{}, pid int, parentKeyName string, 
 	return tree
 }
 
-func (p *Component) ListToTreeData(list interface{}, rootId int, parentKeyName string, titleName string, valueName string) []*TreeData {
+func (p *Component) ListToTreeData(list interface{}, rootId int, parentKeyName string, titleName string, valueName string) []TreeData {
 	return p.buildTree(list, rootId, parentKeyName, titleName, valueName)
 }
 
 // 可选项数据源
 //
-//	SetTreeData([]*treeselect.TreeData {{Value :"zhejiang", Title:"Zhejiang"}})
+//	SetTreeData([]treeselect.TreeData {{Value :"zhejiang", Title:"Zhejiang"}})
 //
 // 或者
 //
@@ -1048,7 +1048,7 @@ func (p *Component) ListToTreeData(list interface{}, rootId int, parentKeyName s
 // SetTreeData(options, 0, "parent_key_name", "title_name", "value_name")
 func (p *Component) SetTreeData(treeData ...interface{}) *Component {
 	if len(treeData) == 1 {
-		getOptions, ok := treeData[0].([]*TreeData)
+		getOptions, ok := treeData[0].([]TreeData)
 		if ok {
 			p.TreeData = getOptions
 			return p
@@ -1064,13 +1064,13 @@ func (p *Component) SetTreeData(treeData ...interface{}) *Component {
 }
 
 // 获取 treeNodes 数据
-func (p *Component) GetTreeData() []*TreeData {
+func (p *Component) GetTreeData() []TreeData {
 
 	return p.TreeData
 }
 
 // 获取 treeNodes 数据
-func (p *Component) GetData() []*TreeData {
+func (p *Component) GetData() []TreeData {
 
 	return p.TreeData
 }

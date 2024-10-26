@@ -20,7 +20,7 @@ type Permission struct {
 }
 
 // 获取列表
-func (model *Permission) List() (list []*selectfield.Option, Error error) {
+func (model *Permission) List() (list []selectfield.Option, Error error) {
 	permissions := []Permission{}
 	err := db.Client.Find(&permissions).Error
 	if err != nil {
@@ -28,7 +28,7 @@ func (model *Permission) List() (list []*selectfield.Option, Error error) {
 	}
 
 	for _, v := range permissions {
-		option := &selectfield.Option{
+		option := selectfield.Option{
 			Label: v.Name,
 			Value: v.Id,
 		}
@@ -39,7 +39,7 @@ func (model *Permission) List() (list []*selectfield.Option, Error error) {
 }
 
 // 获取数据源
-func (model *Permission) DataSource() (dataSource []*transfer.DataSource, Error error) {
+func (model *Permission) DataSource() (dataSource []transfer.DataSource, Error error) {
 	permissions := []Permission{}
 	err := db.Client.Find(&permissions).Error
 	if err != nil {
@@ -47,7 +47,7 @@ func (model *Permission) DataSource() (dataSource []*transfer.DataSource, Error 
 	}
 
 	for _, v := range permissions {
-		option := &transfer.DataSource{
+		option := transfer.DataSource{
 			Key:         v.Id,
 			Title:       v.Name,
 			Description: v.Remark,
@@ -59,14 +59,14 @@ func (model *Permission) DataSource() (dataSource []*transfer.DataSource, Error 
 }
 
 // 通过权限id集合获取权限列表
-func (model *Permission) GetListByIds(permissionIds interface{}) (permissions []*Permission, Error error) {
+func (model *Permission) GetListByIds(permissionIds interface{}) (permissions []Permission, Error error) {
 	err := db.Client.Where("id in ?", permissionIds).Find(&permissions).Error
 
 	return permissions, err
 }
 
 // 通过权限name集合获取权限列表
-func (model *Permission) GetListByNames(permissionNames interface{}) (permissions []*Permission, Error error) {
+func (model *Permission) GetListByNames(permissionNames interface{}) (permissions []Permission, Error error) {
 	err := db.Client.Where("name in ?", permissionNames).Find(&permissions).Error
 
 	return permissions, err

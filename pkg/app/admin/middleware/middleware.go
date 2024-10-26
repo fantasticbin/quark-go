@@ -83,7 +83,7 @@ func Handle(ctx *builder.Context) error {
 	}
 
 	// 记录操作日志
-	(&model.ActionLog{}).InsertGetId(&model.ActionLog{
+	(&model.ActionLog{}).InsertGetId(model.ActionLog{
 		ObjectId: adminInfo.Id,
 		Url:      ctx.Path(),
 		Ip:       ctx.ClientIP(),

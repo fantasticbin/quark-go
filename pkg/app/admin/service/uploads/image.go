@@ -322,7 +322,7 @@ func (p *Image) AfterHandle(ctx *builder.Context, result *storage.FileInfo) erro
 	}
 
 	// 插入数据库
-	id, err := (&model.Picture{}).InsertGetId(&model.Picture{
+	id, err := (&model.Picture{}).InsertGetId(model.Picture{
 		ObjType: "ADMIN",
 		ObjId:   adminInfo.Id,
 		Name:    result.Name,

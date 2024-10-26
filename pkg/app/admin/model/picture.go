@@ -31,8 +31,8 @@ type Picture struct {
 }
 
 // 获取列表
-func (model *Picture) GetListBySearch(appKey string, tokenString string, categoryId interface{}, name interface{}, startDate interface{}, endDate interface{}, page int) (list []*Picture, total int64, Error error) {
-	pictures := []*Picture{}
+func (model *Picture) GetListBySearch(appKey string, tokenString string, categoryId interface{}, name interface{}, startDate interface{}, endDate interface{}, page int) (list []Picture, total int64, Error error) {
+	pictures := []Picture{}
 
 	adminInfo, err := (&User{}).GetAuthUser(appKey, tokenString)
 	if err != nil {
@@ -70,7 +70,7 @@ func (model *Picture) GetListBySearch(appKey string, tokenString string, categor
 }
 
 // 插入数据并返回ID
-func (model *Picture) InsertGetId(picture *Picture) (id int, Error error) {
+func (model *Picture) InsertGetId(picture Picture) (id int, Error error) {
 	err := db.Client.Create(&picture).Error
 	if err != nil {
 		return id, err
@@ -86,7 +86,7 @@ func (model *Picture) DeleteById(id interface{}) error {
 }
 
 // 根据id查询文件信息
-func (model *Picture) GetInfoById(id interface{}) (picture *Picture, Error error) {
+func (model *Picture) GetInfoById(id interface{}) (picture Picture, Error error) {
 	err := db.Client.Where("status = ?", 1).Where("id = ?", id).First(&picture).Error
 
 	return picture, err

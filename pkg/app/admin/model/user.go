@@ -56,7 +56,7 @@ func (model *User) Seeder() {
 }
 
 // 获取管理员JWT信息
-func (model *User) GetAdminClaims(adminInfo *User) (adminClaims *UserClaims) {
+func (model *User) GetAdminClaims(adminInfo User) (adminClaims *UserClaims) {
 	adminClaims = &UserClaims{
 		adminInfo.Id,
 		adminInfo.Username,
@@ -127,14 +127,14 @@ func (model *User) GetAuthUser(appKey string, tokenString string) (adminClaims *
 }
 
 // 通过ID获取管理员信息
-func (model *User) GetInfoById(id interface{}) (admin *User, Error error) {
+func (model *User) GetInfoById(id interface{}) (admin User, Error error) {
 	err := db.Client.Where("status = ?", 1).Where("id = ?", id).First(&admin).Error
 
 	return admin, err
 }
 
 // 通过用户名获取管理员信息
-func (model *User) GetInfoByUsername(username string) (admin *User, Error error) {
+func (model *User) GetInfoByUsername(username string) (admin User, Error error) {
 	err := db.Client.Where("status = ?", 1).Where("username = ?", username).First(&admin).Error
 	if admin.Avatar != "" {
 		admin.Avatar = (&Picture{}).GetPath(admin.Avatar) // 获取头像地址

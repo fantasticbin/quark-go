@@ -89,7 +89,7 @@ type Component struct {
 	PopupClassName           string                 `json:"popupClassName,omitempty"`           // 下拉菜单的 className 属性
 	DropdownMatchSelectWidth interface{}            `json:"dropdownMatchSelectWidth,omitempty"` // 下拉菜单和选择器同宽。默认将设置 min-width，当值小于选择框宽度时会被忽略。false 时会关闭虚拟滚动
 	DropdownStyle            interface{}            `json:"dropdownStyle,omitempty"`            // 下拉菜单的 style 属性
-	FieldNames               *FieldNames            `json:"fieldNames,omitempty"`               // 自定义 options 中 label value children 的字段
+	FieldNames               FieldNames             `json:"fieldNames,omitempty"`               // 自定义 options 中 label value children 的字段
 	LabelInValue             bool                   `json:"labelInValue,omitempty"`             // 是否把每个选项的 label 包装到 value 中，会把 Select 的 value 类型从 string 变为 { value: string, label: ReactNode } 的格式
 	ListHeight               int                    `json:"listHeight,omitempty"`               // 设置弹窗滚动高度 256
 	Loading                  bool                   `json:"loading,omitempty"`                  // 加载中状态
@@ -102,7 +102,7 @@ type Component struct {
 	Open                     bool                   `json:"open,omitempty"`                     // 是否展开下拉菜单
 	OptionFilterProp         string                 `json:"optionFilterProp,omitempty"`         // 搜索时过滤对应的 option 属性，如设置为 children 表示对内嵌内容进行搜索。若通过 options 属性配置选项内容，建议设置 optionFilterProp="label" 来对内容进行搜索。
 	OptionLabelProp          string                 `json:"optionLabelProp,omitempty"`          // 回填到选择框的 Option 的属性值，默认是 Option 的子元素。比如在子元素需要高亮效果时，此值可以设为 value。
-	Options                  []*Option              `json:"options,omitempty"`                  // 可选项数据源
+	Options                  []Option               `json:"options,omitempty"`                  // 可选项数据源
 	Placeholder              string                 `json:"placeholder,omitempty"`              // 选择框默认文本
 	Placement                string                 `json:"placement,omitempty"`                // 选择框弹出的位置 bottomLeft bottomRight topLeft topRight
 	RemoveIcon               interface{}            `json:"removeIcon,omitempty"`               // 自定义的多选框清除图标
@@ -759,7 +759,7 @@ func (p *Component) IsShownOnImport() bool {
 }
 
 // 当前可选项
-func (p *Component) GetOptions() []*Option {
+func (p *Component) GetOptions() []Option {
 
 	return p.Options
 }
@@ -779,8 +779,8 @@ func (p *Component) GetCallback() interface{} {
 }
 
 // 使用反射构建树结构
-func (p *Component) buildOptions(items interface{}, labelName string, valueName string) []*Option {
-	var options []*Option
+func (p *Component) buildOptions(items interface{}, labelName string, valueName string) []Option {
+	var options []Option
 
 	v := reflect.ValueOf(items)
 
@@ -819,7 +819,7 @@ func (p *Component) buildOptions(items interface{}, labelName string, valueName 
 		label := labelField.String()
 
 		// 构建级联选择框的选项
-		option := &Option{
+		option := Option{
 			Value: value,
 			Label: label,
 		}
@@ -829,11 +829,11 @@ func (p *Component) buildOptions(items interface{}, labelName string, valueName 
 	return options
 }
 
-func (p *Component) ListToOptions(list interface{}, labelName string, valueName string) []*Option {
+func (p *Component) ListToOptions(list interface{}, labelName string, valueName string) []Option {
 	return p.buildOptions(list, labelName, valueName)
 }
 
-//	[]*selectfield.Option{
+//	[]selectfield.Option{
 //			{Value: 1, Label: "新闻"},
 //			{Value: 2, Label: "音乐"},
 //			{Value: 3, Label: "体育"},
@@ -844,7 +844,7 @@ func (p *Component) ListToOptions(list interface{}, labelName string, valueName 
 // SetOptions(options, "label_name", "value_name")
 func (p *Component) SetOptions(options ...interface{}) *Component {
 	if len(options) == 1 {
-		getOptions, ok := options[0].([]*Option)
+		getOptions, ok := options[0].([]Option)
 		if ok {
 			p.Options = getOptions
 			return p
@@ -934,7 +934,7 @@ func (p *Component) SetDropdownStyle(dropdownStyle interface{}) *Component {
 }
 
 // 自定义 options 中 label value children 的字段
-func (p *Component) SetFieldNames(fieldNames *FieldNames) *Component {
+func (p *Component) SetFieldNames(fieldNames FieldNames) *Component {
 	p.FieldNames = fieldNames
 
 	return p

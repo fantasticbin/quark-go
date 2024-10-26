@@ -24,7 +24,7 @@ type Option struct {
 	Label    string      `json:"label,omitempty"`
 	Value    interface{} `json:"value"`
 	Disabled bool        `json:"disabled,omitempty"`
-	Children []*Option   `json:"children,omitempty"`
+	Children []Option    `json:"children,omitempty"`
 	// 标记是否为叶子节点，设置了 `loadData` 时有效
 	// 设为 `false` 时会强制标记为父节点，即使当前节点没有 children，也会显示展开图标
 	IsLeaf bool `json:"isLeaf"`
@@ -98,7 +98,7 @@ type Component struct {
 	MaxTagTextLength        int                    `json:"maxTagTextLength,omitempty"`        // 最大显示的 tag 文本长度
 	NotFoundContent         string                 `json:"notFoundContent,omitempty"`         // 当下拉列表为空时显示的内容
 	Open                    bool                   `json:"open,omitempty"`                    // 控制浮层显隐
-	Options                 []*Option              `json:"options,omitempty"`                 // 可选项数据源
+	Options                 []Option               `json:"options,omitempty"`                 // 可选项数据源
 	Placeholder             string                 `json:"placeholder,omitempty"`             // 输入框占位文本
 	Placement               string                 `json:"placement,omitempty"`               // 浮层预设位置，bottomLeft bottomRight topLeft topRight
 	ShowSearch              bool                   `json:"showSearch,omitempty"`              // 在选择框中显示搜索框
@@ -762,7 +762,7 @@ func (p *Component) IsShownOnImport() bool {
 }
 
 // 当前可选项
-func (p *Component) GetOptions() []*Option {
+func (p *Component) GetOptions() []Option {
 
 	return p.Options
 }
@@ -900,8 +900,8 @@ func (p *Component) SetOpen(open bool) *Component {
 }
 
 // buildTree 使用反射构建树结构
-func (p *Component) buildTree(items interface{}, pid int, parentKeyName string, labelName string, valueName string) []*Option {
-	var tree []*Option
+func (p *Component) buildTree(items interface{}, pid int, parentKeyName string, labelName string, valueName string) []Option {
+	var tree []Option
 
 	// 通过反射获取切片的值
 	v := reflect.ValueOf(items)
@@ -953,7 +953,7 @@ func (p *Component) buildTree(items interface{}, pid int, parentKeyName string, 
 			children := p.buildTree(items, value, parentKeyName, labelName, valueName)
 
 			// 构建级联选择框的选项
-			option := &Option{
+			option := Option{
 				Value:    value,
 				Label:    label,
 				Children: children,
@@ -965,13 +965,13 @@ func (p *Component) buildTree(items interface{}, pid int, parentKeyName string, 
 	return tree
 }
 
-func (p *Component) ListToOptions(list interface{}, rootId int, parentKeyName string, labelName string, valueName string) []*Option {
+func (p *Component) ListToOptions(list interface{}, rootId int, parentKeyName string, labelName string, valueName string) []Option {
 	return p.buildTree(list, rootId, parentKeyName, labelName, valueName)
 }
 
 // 可选项数据源
 //
-// SetOptions([]*cascader.Option {{Value :"zhejiang", Label:"Zhejiang"}})
+// SetOptions([]cascader.Option {{Value :"zhejiang", Label:"Zhejiang"}})
 //
 // 或者
 //
@@ -982,7 +982,7 @@ func (p *Component) ListToOptions(list interface{}, rootId int, parentKeyName st
 // SetOptions(options, 0, "parent_key_name", "label_name", "value_name")
 func (p *Component) SetOptions(options ...interface{}) *Component {
 	if len(options) == 1 {
-		getOptions, ok := options[0].([]*Option)
+		getOptions, ok := options[0].([]Option)
 		if ok {
 			p.Options = getOptions
 			return p

@@ -162,7 +162,7 @@ func (p *CasbinRule) RemoveMenuPermissions(menuId int) (err error) {
 }
 
 // 获取菜单拥有的权限
-func (p *CasbinRule) GetMenuPermissions(menuId int) (permissions []*Permission, err error) {
+func (p *CasbinRule) GetMenuPermissions(menuId int) (permissions []Permission, err error) {
 	enforcer, err := p.Enforcer()
 	if err != nil {
 		return
@@ -242,7 +242,7 @@ func (p *CasbinRule) RemoveRoleMenuAndPermissions(roleId int) (err error) {
 }
 
 // 获取角色拥有的菜单
-func (p *CasbinRule) GetRoleMenus(roleId int) (menus []*Menu, err error) {
+func (p *CasbinRule) GetRoleMenus(roleId int) (menus []Menu, err error) {
 	enforcer, err := p.Enforcer()
 	if err != nil {
 		return
@@ -264,7 +264,7 @@ func (p *CasbinRule) GetRoleMenus(roleId int) (menus []*Menu, err error) {
 }
 
 // 获取角色拥有的权限
-func (p *CasbinRule) GetRolePermissions(roleId int) (permissions []*Permission, err error) {
+func (p *CasbinRule) GetRolePermissions(roleId int) (permissions []Permission, err error) {
 	enforcer, err := p.Enforcer()
 	if err != nil {
 		return
@@ -328,7 +328,7 @@ func (p *CasbinRule) RemoveUserRoles(modelId int) (err error) {
 }
 
 // 获取用户拥有的角色
-func (p *CasbinRule) GetUserRoles(modelId int) (roles []*Role, err error) {
+func (p *CasbinRule) GetUserRoles(modelId int) (roles []Role, err error) {
 	enforcer, err := p.Enforcer()
 	if err != nil {
 		return
@@ -352,8 +352,8 @@ func (p *CasbinRule) GetUserRoles(modelId int) (roles []*Role, err error) {
 }
 
 // 获取用户拥有的菜单
-func (p *CasbinRule) GetUserMenus(modelId int) (menus []*Menu, err error) {
-	getMenus := []*Menu{}
+func (p *CasbinRule) GetUserMenus(modelId int) (menus []Menu, err error) {
+	getMenus := []Menu{}
 	roles, err := p.GetUserRoles(modelId)
 	if err != nil {
 		return
@@ -437,7 +437,7 @@ func (p *CasbinRule) GetRoleDepartmentIds(roleId int) (ids []int, err error) {
 }
 
 // 获取角色拥有的部门
-func (p *CasbinRule) GetRoleDepartments(roleId int) (departments []*Department, err error) {
+func (p *CasbinRule) GetRoleDepartments(roleId int) (departments []Department, err error) {
 	departmentIds, err := p.GetRoleDepartmentIds(roleId)
 	if err != nil {
 		return
@@ -446,8 +446,8 @@ func (p *CasbinRule) GetRoleDepartments(roleId int) (departments []*Department, 
 }
 
 // 获取用户拥有的部门
-func (p *CasbinRule) GetUserDepartments(modelId int) (menus []*Department, err error) {
-	getDepartments := []*Department{}
+func (p *CasbinRule) GetUserDepartments(modelId int) (menus []Department, err error) {
+	getDepartments := []Department{}
 	roles, err := p.GetUserRoles(modelId)
 	if err != nil {
 		return

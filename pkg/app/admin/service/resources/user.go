@@ -139,7 +139,7 @@ func (p *User) Fields(ctx *builder.Context) []interface{} {
 			SetRules([]*rule.Rule{
 				rule.Required(true, "请选择性别"),
 			}).
-			SetOptions([]*radio.Option{
+			SetOptions([]radio.Option{
 				field.RadioOption("男", 1),
 				field.RadioOption("女", 2),
 			}).

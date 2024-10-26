@@ -50,7 +50,7 @@ func (p *Account) Fields(ctx *builder.Context) []interface{} {
 				rule.Required(true, "手机号必须填写"),
 			}),
 		field.Radio("sex", "性别").
-			SetOptions([]*radio.Option{
+			SetOptions([]radio.Option{
 				field.RadioOption("男", 1),
 				field.RadioOption("女", 2),
 			}).

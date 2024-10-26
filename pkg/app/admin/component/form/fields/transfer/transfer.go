@@ -65,7 +65,7 @@ type Component struct {
 	ShowOnImport   bool            `json:"-"`             // 在导入Excel上展示
 	Callback       interface{}     `json:"-"`             // 回调函数
 
-	DataSource      []*DataSource          `json:"dataSource,omitempty"`      // 数据源，其中的数据将会被渲染到左边一栏中，targetKeys 中指定的除外
+	DataSource      []DataSource           `json:"dataSource,omitempty"`      // 数据源，其中的数据将会被渲染到左边一栏中，targetKeys 中指定的除外
 	Disabled        bool                   `json:"disabled,omitempty"`        // 是否禁用
 	SelectionsIcon  interface{}            `json:"selectionsIcon,omitempty"`  // 自定义下拉菜单图标
 	FilterOption    interface{}            `json:"filterOption,omitempty"`    // 根据搜索内容进行筛选，接收 inputValue option 两个参数，当 option 符合筛选条件时，应返回 true，反之则返回 false
@@ -762,8 +762,8 @@ func (p *Component) SetApi(api string) *Component {
 }
 
 // 使用反射构建树结构
-func (p *Component) buildDataSource(items interface{}, keyName string, titleName string, descriptionName string) []*DataSource {
-	var options []*DataSource
+func (p *Component) buildDataSource(items interface{}, keyName string, titleName string, descriptionName string) []DataSource {
+	var options []DataSource
 
 	v := reflect.ValueOf(items)
 
@@ -807,7 +807,7 @@ func (p *Component) buildDataSource(items interface{}, keyName string, titleName
 		description := descriptionField.String()
 
 		// 构建级联选择框的选项
-		option := &DataSource{
+		option := DataSource{
 			Key:         key,
 			Title:       title,
 			Description: description,
@@ -818,11 +818,11 @@ func (p *Component) buildDataSource(items interface{}, keyName string, titleName
 	return options
 }
 
-func (p *Component) ListToDataSource(list interface{}, keyName string, titleName string, descriptionName string) []*DataSource {
+func (p *Component) ListToDataSource(list interface{}, keyName string, titleName string, descriptionName string) []DataSource {
 	return p.buildDataSource(list, keyName, titleName, descriptionName)
 }
 
-//	[]*transfer.DataSource{
+//	[]transfer.DataSource{
 //			{Key: 1, Title: "新闻", Description: "新闻描述"},
 //			{Key: 2, Title: "音乐", Description: "音乐描述"},
 //			{Key: 3, Title: "体育", Description: "体育描述"},
@@ -833,7 +833,7 @@ func (p *Component) ListToDataSource(list interface{}, keyName string, titleName
 // SetDataSource(dataSource, "key_name", "title_name", "description_name")
 func (p *Component) SetDataSource(dataSource ...interface{}) *Component {
 	if len(dataSource) == 1 {
-		getOptions, ok := dataSource[0].([]*DataSource)
+		getOptions, ok := dataSource[0].([]DataSource)
 		if ok {
 			p.DataSource = getOptions
 			return p

@@ -51,7 +51,7 @@ func (p *Config) Fields(ctx *builder.Context) []interface{} {
 				rule.Unique("configs", "name", "{id}", "名称已存在"),
 			}),
 		field.Radio("type", "表单类型").
-			SetOptions([]*radio.Option{
+			SetOptions([]radio.Option{
 				field.RadioOption("text", "文本"),
 				field.RadioOption("textarea", "文本域"),
 				field.RadioOption("picture", "图片"),

@@ -52,8 +52,8 @@ func (model *Department) GetChildrenIds(pid int) (list []int) {
 }
 
 // 递归获取部门数据
-func (model *Department) GetChildrenDepartments(pid int) (list []*Department) {
-	departments := []*Department{}
+func (model *Department) GetChildrenDepartments(pid int) (list []Department) {
+	departments := []Department{}
 	db.Client.
 		Where("pid = ?", pid).
 		Where("status = ?", 1).
@@ -76,21 +76,21 @@ func (model *Department) GetChildrenDepartments(pid int) (list []*Department) {
 }
 
 // 通过ID获取信息
-func (model *Department) GetInfoById(id interface{}) (department *Department, Error error) {
+func (model *Department) GetInfoById(id interface{}) (department Department, Error error) {
 	err := db.Client.Where("status = ?", 1).Where("id = ?", id).First(&department).Error
 
 	return department, err
 }
 
 // 获取列表
-func (model *Department) GetList() (departments []*Department, Error error) {
+func (model *Department) GetList() (departments []Department, Error error) {
 	err := db.Client.Where("status = ?", 1).Find(&departments).Error
 
 	return departments, err
 }
 
 // 通过id集合获取列表
-func (model *Department) GetListByIds(ids interface{}) (departments []*Department, Error error) {
+func (model *Department) GetListByIds(ids interface{}) (departments []Department, Error error) {
 	err := db.Client.Where("id in ?", ids).Where("status = ?", 1).Find(&departments).Error
 
 	return departments, err

@@ -736,7 +736,7 @@ func (p *Component) SetApi(api string) *Component {
 }
 
 // 设置属性
-func (p *Component) SetOptions(options *Option) *Component {
+func (p *Component) SetOptions(options Option) *Component {
 	p.CheckedChildren = options.CheckedChildren
 	p.UnCheckedChildren = options.UnCheckedChildren
 

@@ -44,7 +44,7 @@ func (p *Permission) Fields(ctx *builder.Context) []interface{} {
 				rule.Required(true, "路径必须填写"),
 			}),
 		field.Select("method", "方法").
-			SetOptions([]*selectfield.Option{
+			SetOptions([]selectfield.Option{
 				field.SelectOption("Any", "Any"),
 				field.SelectOption("GET", "GET"),
 				field.SelectOption("HEAD", "HEAD"),

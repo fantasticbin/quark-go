@@ -37,7 +37,7 @@ func (model *File) InsertGetId(data *File) (id int, Error error) {
 }
 
 // 根据hash查询文件信息
-func (model *File) GetInfoByHash(hash string) (file *File, Error error) {
+func (model *File) GetInfoByHash(hash string) (file File, Error error) {
 	err := db.Client.Where("status = ?", 1).Where("hash = ?", hash).First(&file).Error
 
 	return file, err

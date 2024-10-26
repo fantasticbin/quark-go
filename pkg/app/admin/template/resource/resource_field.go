@@ -122,8 +122,8 @@ func (p *Field) Radio(params ...interface{}) *radio.Component {
 // 单选组件Option
 //
 // field.RadioOption("男", 1)
-func (p *Field) RadioOption(label string, value interface{}) *radio.Option {
-	return &radio.Option{
+func (p *Field) RadioOption(label string, value interface{}) radio.Option {
+	return radio.Option{
 		Label: label,
 		Value: value,
 	}
@@ -139,8 +139,8 @@ func (p *Field) Checkbox(params ...interface{}) *checkbox.Component {
 // 多选组件Option
 //
 // field.CheckboxOption("多选", "1")
-func (p *Field) CheckboxOption(label string, value interface{}) *checkbox.Option {
-	return &checkbox.Option{
+func (p *Field) CheckboxOption(label string, value interface{}) checkbox.Option {
+	return checkbox.Option{
 		Label: label,
 		Value: value,
 	}
@@ -205,8 +205,8 @@ func (p *Field) Select(params ...interface{}) *selectfield.Component {
 // 下拉框组件Option
 //
 // field.SelectOption("多选", "1")
-func (p *Field) SelectOption(label string, value interface{}) *selectfield.Option {
-	return &selectfield.Option{
+func (p *Field) SelectOption(label string, value interface{}) selectfield.Option {
+	return selectfield.Option{
 		Label: label,
 		Value: value,
 	}
@@ -352,7 +352,7 @@ func (p *Field) Year(params ...interface{}) *year.Component {
 //
 //	field.Selects([]interface{}{
 //		field.Select("province", "省").
-//			SetOptions([]*selectfield.Option{
+//			SetOptions([]selectfield.Option{
 //				{Value: 1, Label: "北京"},
 //				{Value: 2, Label: "天津"},
 //				{Value: 3, Label: "河北省"},

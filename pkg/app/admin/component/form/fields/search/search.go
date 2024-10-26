@@ -75,7 +75,7 @@ type Component struct {
 	Placeholder  string                 `json:"placeholder,omitempty"`  // 占位符
 	DefaultValue interface{}            `json:"defaultValue,omitempty"` // 默认选中的选项
 	Disabled     bool                   `json:"disabled,omitempty"`     // 整组失效
-	Options      []*Option              `json:"options,omitempty"`      // 可选项数据源
+	Options      []Option               `json:"options,omitempty"`      // 可选项数据源
 	OptionType   string                 `json:"optionType,omitempty"`   // 用于设置 Search options 类型 default | button
 	Size         string                 `json:"size,omitempty"`         // 大小，只对按钮样式生效, large | middle | small
 	Value        interface{}            `json:"value,omitempty"`        // 指定选中项,string[] | number[]
@@ -752,8 +752,8 @@ func (p *Component) GetCallback() interface{} {
 }
 
 // 使用反射构建树结构
-func (p *Component) buildOptions(items interface{}, labelName string, valueName string) []*Option {
-	var options []*Option
+func (p *Component) buildOptions(items interface{}, labelName string, valueName string) []Option {
+	var options []Option
 
 	v := reflect.ValueOf(items)
 
@@ -792,7 +792,7 @@ func (p *Component) buildOptions(items interface{}, labelName string, valueName 
 		label := labelField.String()
 
 		// 构建级联选择框的选项
-		option := &Option{
+		option := Option{
 			Value: value,
 			Label: label,
 		}
@@ -802,18 +802,18 @@ func (p *Component) buildOptions(items interface{}, labelName string, valueName 
 	return options
 }
 
-func (p *Component) ListToOptions(list interface{}, labelName string, valueName string) []*Option {
+func (p *Component) ListToOptions(list interface{}, labelName string, valueName string) []Option {
 	return p.buildOptions(list, labelName, valueName)
 }
 
-// 设置属性，示例：[]*search.Option{{Value: 1, Label: "男"}, {Value: 2, Label: "女"}}
+// 设置属性，示例：[]search.Option{{Value: 1, Label: "男"}, {Value: 2, Label: "女"}}
 //
 // 或者
 //
 // SetOptions(options, "label_name", "value_name")
 func (p *Component) SetOptions(options ...interface{}) *Component {
 	if len(options) == 1 {
-		getOptions, ok := options[0].([]*Option)
+		getOptions, ok := options[0].([]Option)
 		if ok {
 			p.Options = getOptions
 			return p

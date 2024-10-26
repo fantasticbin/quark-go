@@ -28,14 +28,14 @@ func (model *Position) Seeder() {
 }
 
 // 获取角色列表
-func (model *Position) List() (list []*checkbox.Option, Error error) {
+func (model *Position) List() (list []checkbox.Option, Error error) {
 	positions := []Position{}
 	err := db.Client.Find(&positions).Error
 	if err != nil {
 		return list, err
 	}
 	for _, v := range positions {
-		list = append(list, &checkbox.Option{
+		list = append(list, checkbox.Option{
 			Label: v.Name,
 			Value: v.Id,
 		})

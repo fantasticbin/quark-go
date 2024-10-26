@@ -38,7 +38,7 @@ func (p *Menu) Init(ctx *builder.Context) interface{} {
 
 // 字段
 func (p *Menu) Fields(ctx *builder.Context) []interface{} {
-	field := &resource.Field{}
+	field := resource.Field{}
 
 	// 权限列表
 	permissions, _ := (&model.Permission{}).DataSource()
@@ -78,7 +78,7 @@ func (p *Menu) Fields(ctx *builder.Context) []interface{} {
 		}),
 		field.Group([]interface{}{
 			field.Radio("type", "类型").
-				SetOptions([]*radio.Option{
+				SetOptions([]radio.Option{
 					field.RadioOption("目录", 1),
 					field.RadioOption("菜单", 2),
 					field.RadioOption("按钮", 3),

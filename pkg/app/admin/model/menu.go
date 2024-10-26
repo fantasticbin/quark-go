@@ -59,8 +59,8 @@ func (p *Menu) Seeder() {
 }
 
 // 获取菜单列表
-func (model *Menu) GetList() (menus []*Menu, Error error) {
-	list := []*Menu{}
+func (model *Menu) GetList() (menus []Menu, Error error) {
+	list := []Menu{}
 
 	err := db.Client.
 		Where("guard_name = ?", "admin").
@@ -73,20 +73,20 @@ func (model *Menu) GetList() (menus []*Menu, Error error) {
 }
 
 // 获取菜单列表携带根节点
-func (model *Menu) GetListWithRoot() (menus []*Menu, Error error) {
+func (model *Menu) GetListWithRoot() (menus []Menu, Error error) {
 	list, err := model.GetList()
 	if err != nil {
 		return list, err
 	}
 
-	list = append(list, &Menu{Id: 0, Pid: -1, Name: "根节点"})
+	list = append(list, Menu{Id: 0, Pid: -1, Name: "根节点"})
 
 	return list, err
 }
 
 // 递归获取父数据
-func (model *Menu) FindParentTreeNode(chrildPid int) (list []*Menu) {
-	menus := []*Menu{}
+func (model *Menu) FindParentTreeNode(chrildPid int) (list []Menu) {
+	menus := []Menu{}
 	db.Client.
 		Where("guard_name = ?", "admin").
 		Where("id = ?", chrildPid).
@@ -112,7 +112,7 @@ func (model *Menu) FindParentTreeNode(chrildPid int) (list []*Menu) {
 
 // 通过管理员ID权限菜单
 func (model *Menu) GetListByAdminId(adminId int) (menuList interface{}, err error) {
-	menus := []*Menu{}
+	menus := []Menu{}
 
 	if adminId == 1 {
 		db.Client.
@@ -166,8 +166,8 @@ func (model *Menu) GetListByAdminId(adminId int) (menuList interface{}, err erro
 }
 
 // 解析菜单
-func (model *Menu) MenuParser(menus []*Menu) (menuList interface{}, Error error) {
-	newMenus := []*Menu{}
+func (model *Menu) MenuParser(menus []Menu) (menuList interface{}, Error error) {
+	newMenus := []Menu{}
 
 	for _, v := range menus {
 		v.Key = uuid.New()
@@ -192,7 +192,7 @@ func (model *Menu) MenuParser(menus []*Menu) (menuList interface{}, Error error)
 }
 
 // 判断菜单是否已经存在
-func (model *Menu) HasMenu(menus []*Menu, id int) (result bool) {
+func (model *Menu) HasMenu(menus []Menu, id int) (result bool) {
 	for _, v := range menus {
 		if v.Id == id {
 			result = true
@@ -203,14 +203,14 @@ func (model *Menu) HasMenu(menus []*Menu, id int) (result bool) {
 }
 
 // 通过ID获取菜单信息
-func (model *Menu) GetInfoById(id interface{}) (menu *Menu, Error error) {
+func (model *Menu) GetInfoById(id interface{}) (menu Menu, Error error) {
 	err := db.Client.Where("status = ?", 1).Where("id = ?", id).First(&menu).Error
 
 	return menu, err
 }
 
 // 通过名称获取菜单信息
-func (model *Menu) GetInfoByName(name string) (menu *Menu, Error error) {
+func (model *Menu) GetInfoByName(name string) (menu Menu, Error error) {
 	err := db.Client.Where("status = ?", 1).Where("name = ?", name).First(&menu).Error
 
 	return menu, err
@@ -231,7 +231,7 @@ func (model *Menu) IsExist(id interface{}) bool {
 }
 
 // 通过id集合获取列表
-func (model *Menu) GetListByIds(menuIds interface{}) (menus []*Menu, Error error) {
+func (model *Menu) GetListByIds(menuIds interface{}) (menus []Menu, Error error) {
 	err := db.Client.Where("id in ?", menuIds).Find(&menus).Error
 
 	return menus, err
