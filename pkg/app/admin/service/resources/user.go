@@ -106,7 +106,7 @@ func (p *User) Fields(ctx *builder.Context) []interface{} {
 			OnlyOnForms().
 			HideWhenImporting(true),
 		field.TreeSelect("department_id", "部门").
-			SetData(departments, "pid", "name", "id").
+			SetTreeData(departments, "pid", "name", "id").
 			OnlyOnForms().
 			HideWhenImporting(true),
 		field.Checkbox("position_ids", "职位").

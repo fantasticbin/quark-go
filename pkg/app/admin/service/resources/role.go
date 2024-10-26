@@ -37,7 +37,7 @@ func (p *Role) Init(ctx *builder.Context) interface{} {
 // 字段
 func (p *Role) Fields(ctx *builder.Context) []interface{} {
 	field := &resource.Field{}
-	treeData, _ := (&model.Menu{}).Tree()
+	treeData, _ := (&model.Menu{}).GetList()
 
 	return []interface{}{
 		field.ID("id", "ID"),
@@ -48,7 +48,7 @@ func (p *Role) Fields(ctx *builder.Context) []interface{} {
 		field.Text("guard_name", "守卫").
 			SetDefault("admin"),
 		field.Tree("menu_ids", "权限").
-			SetData(treeData).
+			SetTreeData(treeData, "pid", "id", "name").
 			OnlyOnForms(),
 		field.Datetime("created_at", "创建时间").
 			OnlyOnIndex(),

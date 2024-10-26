@@ -116,7 +116,7 @@ func (p *Template) IndexSearches(ctx *builder.Context) interface{} {
 			item = field.
 				TreeSelect(name, label).
 				SetWidth(nil).
-				SetData(options.([]*treeselect.TreeData))
+				SetTreeData(options.([]*treeselect.TreeData))
 		}
 
 		search = search.SetItems(item)

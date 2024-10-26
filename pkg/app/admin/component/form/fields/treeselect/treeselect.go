@@ -1031,28 +1031,21 @@ func (p *Component) buildTree(items interface{}, pid int, parentKeyName string, 
 	return tree
 }
 
-func (p *Component) ListToTreeData(list interface{}, parentKeyName string, titleName string, valueName string) []*TreeData {
-	return p.buildTree(list, 0, parentKeyName, titleName, valueName)
+func (p *Component) ListToTreeData(list interface{}, rootId int, parentKeyName string, titleName string, valueName string) []*TreeData {
+	return p.buildTree(list, rootId, parentKeyName, titleName, valueName)
 }
 
 // 可选项数据源
 //
-//	SetTreeData([]*treeselect.TreeData {
-//			{
-//				Value :"zhejiang",
-//				Title:"Zhejiang",
-//				Children : []*treeselect.TreeData {
-//					{
-//						Value:"hangzhou",
-//						Title:"Hangzhou",
-//					},
-//				},
-//			},
-//		})
+//	SetTreeData([]*treeselect.TreeData {{Value :"zhejiang", Title:"Zhejiang"}})
 //
 // 或者
 //
 // SetTreeData(options, "parent_key_name", "title_name", "value_name")
+//
+// 或者
+//
+// SetTreeData(options, 0, "parent_key_name", "title_name", "value_name")
 func (p *Component) SetTreeData(treeData ...interface{}) *Component {
 	if len(treeData) == 1 {
 		getOptions, ok := treeData[0].([]*TreeData)
@@ -1062,32 +1055,11 @@ func (p *Component) SetTreeData(treeData ...interface{}) *Component {
 		}
 	}
 	if len(treeData) == 4 {
-		p.TreeData = p.ListToTreeData(treeData[0], treeData[1].(string), treeData[2].(string), treeData[3].(string))
+		p.TreeData = p.ListToTreeData(treeData[0], 0, treeData[1].(string), treeData[2].(string), treeData[3].(string))
 	}
-	return p
-}
-
-// 可选项数据源
-//
-//	SetData([]*treeselect.TreeData {
-//			{
-//				Value :"zhejiang",
-//				Title:"Zhejiang",
-//				Children : []*treeselect.TreeData {
-//					{
-//						Value:"hangzhou",
-//						Title:"Hangzhou",
-//					},
-//				},
-//			},
-//		})
-//
-// 或者
-//
-// SetData(options, "parent_key_name", "title_name", "value_name")
-func (p *Component) SetData(treeData ...interface{}) *Component {
-	p.SetTreeData(treeData...)
-
+	if len(treeData) == 5 {
+		p.TreeData = p.ListToTreeData(treeData[0], treeData[1].(int), treeData[2].(string), treeData[3].(string), treeData[4].(string))
+	}
 	return p
 }
 

@@ -965,28 +965,21 @@ func (p *Component) buildTree(items interface{}, pid int, parentKeyName string, 
 	return tree
 }
 
-func (p *Component) ListToOptions(list interface{}, parentKeyName string, labelName string, valueName string) []*Option {
-	return p.buildTree(list, 0, parentKeyName, labelName, valueName)
+func (p *Component) ListToOptions(list interface{}, rootId int, parentKeyName string, labelName string, valueName string) []*Option {
+	return p.buildTree(list, rootId, parentKeyName, labelName, valueName)
 }
 
 // 可选项数据源
 //
-//	SetOptions([]*cascader.Option {
-//			{
-//				Value :"zhejiang",
-//				Label:"Zhejiang",
-//				Children : []*cascader.Option {
-//					{
-//						Value:"hangzhou",
-//						Label:"Hangzhou",
-//					},
-//				},
-//			},
-//		})
+// SetOptions([]*cascader.Option {{Value :"zhejiang", Label:"Zhejiang"}})
 //
 // 或者
 //
 // SetOptions(options, "parent_key_name", "label_name", "value_name")
+//
+// 或者
+//
+// SetOptions(options, 0, "parent_key_name", "label_name", "value_name")
 func (p *Component) SetOptions(options ...interface{}) *Component {
 	if len(options) == 1 {
 		getOptions, ok := options[0].([]*Option)
@@ -996,7 +989,10 @@ func (p *Component) SetOptions(options ...interface{}) *Component {
 		}
 	}
 	if len(options) == 4 {
-		p.Options = p.ListToOptions(options[0], options[1].(string), options[2].(string), options[3].(string))
+		p.Options = p.ListToOptions(options[0], 0, options[1].(string), options[2].(string), options[3].(string))
+	}
+	if len(options) == 5 {
+		p.Options = p.ListToOptions(options[0], options[1].(int), options[2].(string), options[3].(string), options[4].(string))
 	}
 	return p
 }

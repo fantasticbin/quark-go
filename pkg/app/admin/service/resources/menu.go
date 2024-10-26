@@ -44,7 +44,7 @@ func (p *Menu) Fields(ctx *builder.Context) []interface{} {
 	permissions, _ := (&model.Permission{}).DataSource()
 
 	// 菜单列表
-	menus, _ := (&model.Menu{}).TreeSelect(true)
+	menus, _ := (&model.Menu{}).GetListWithRoot()
 
 	return []interface{}{
 		field.Hidden("id", "ID"),                 // 列表读取且不展示的字段
@@ -67,7 +67,7 @@ func (p *Menu) Fields(ctx *builder.Context) []interface{} {
 				SetEditable(true).
 				SetDefault(0),
 			field.TreeSelect("pid", "父节点").
-				SetData(menus).
+				SetTreeData(menus, -1, "pid", "name", "id").
 				SetDefault(0).
 				OnlyOnForms(),
 			field.Switch("status", "状态").

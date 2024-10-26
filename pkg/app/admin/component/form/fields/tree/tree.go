@@ -1014,28 +1014,21 @@ func (p *Component) buildTree(items interface{}, pid int, parentKeyName string, 
 	return tree
 }
 
-func (p *Component) ListToTreeData(list interface{}, parentKeyName string, keyName string, titleName string) []*TreeData {
-	return p.buildTree(list, 0, parentKeyName, keyName, titleName)
+func (p *Component) ListToTreeData(list interface{}, rootId int, parentKeyName string, keyName string, titleName string) []*TreeData {
+	return p.buildTree(list, rootId, parentKeyName, keyName, titleName)
 }
 
 // 可选项数据源
 //
-//	SetTreeData([]*tree.TreeData {
-//			{
-//				Key :"zhejiang",
-//				Title:"Zhejiang",
-//				Children : []*tree.TreeData {
-//					{
-//						Key:"hangzhou",
-//						Title:"Hangzhou",
-//					},
-//				},
-//			},
-//		})
+//	SetTreeData([]*tree.TreeData {{ Key :"zhejiang", Title:"Zhejiang"}})
 //
 // 或者
 //
 // SetTreeData(options, "parent_key_name", "key_name", "title_name")
+//
+// 或者
+//
+// SetTreeData(options, 0, "parent_key_name", "key_name", "title_name")
 func (p *Component) SetTreeData(treeData ...interface{}) *Component {
 	if len(treeData) == 1 {
 		getOptions, ok := treeData[0].([]*TreeData)
@@ -1045,32 +1038,11 @@ func (p *Component) SetTreeData(treeData ...interface{}) *Component {
 		}
 	}
 	if len(treeData) == 4 {
-		p.TreeData = p.ListToTreeData(treeData[0], treeData[1].(string), treeData[2].(string), treeData[3].(string))
+		p.TreeData = p.ListToTreeData(treeData[0], 0, treeData[1].(string), treeData[2].(string), treeData[3].(string))
 	}
-	return p
-}
-
-// 可选项数据源
-//
-//	SetData([]*tree.TreeData {
-//			{
-//				Key :"zhejiang",
-//				Title:"Zhejiang",
-//				Children : []*tree.TreeData {
-//					{
-//						Key:"hangzhou",
-//						Title:"Hangzhou",
-//					},
-//				},
-//			},
-//		})
-//
-// 或者
-//
-// SetData(options, "parent_key_name", "key_name", "title_name")
-func (p *Component) SetData(treeData ...interface{}) *Component {
-	p.SetTreeData(treeData...)
-
+	if len(treeData) == 5 {
+		p.TreeData = p.ListToTreeData(treeData[0], treeData[1].(int), treeData[2].(string), treeData[3].(string), treeData[4].(string))
+	}
 	return p
 }
 

@@ -101,7 +101,7 @@ func (p *DataScopeAction) Fields(ctx *builder.Context) []interface{} {
 				return []interface{}{
 					field.Tree("department_ids", "数据权限").
 						SetDefaultExpandAll(true).
-						SetData(departments, "pid", "id", "name"),
+						SetTreeData(departments, "pid", "id", "name"),
 				}
 			}),
 	}

@@ -4,8 +4,6 @@ import (
 	"strings"
 
 	"github.com/go-basic/uuid"
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/component/form/fields/tree"
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/component/form/fields/treeselect"
 	"github.com/quarkcloudio/quark-go/v3/pkg/dal/db"
 	"github.com/quarkcloudio/quark-go/v3/pkg/utils/datetime"
 	"github.com/quarkcloudio/quark-go/v3/pkg/utils/lister"
@@ -60,91 +58,30 @@ func (p *Menu) Seeder() {
 	db.Client.Create(&seeders)
 }
 
-// 获取TreeSelect组件数据
-func (model *Menu) TreeSelect(root bool) (list []*treeselect.TreeData, Error error) {
+// 获取菜单列表
+func (model *Menu) GetList() (menus []*Menu, Error error) {
+	list := []*Menu{}
 
-	// 是否有根节点
-	if root {
-		list = append(list, &treeselect.TreeData{
-			Title: "根节点",
-			Value: 0,
-		})
-	}
-
-	list = append(list, model.FindTreeSelectNode(0)...)
-
-	return list, nil
-}
-
-// 递归获取TreeSelect组件数据
-func (model *Menu) FindTreeSelectNode(pid int) (list []*treeselect.TreeData) {
-	menus := []Menu{}
-	db.Client.
+	err := db.Client.
 		Where("guard_name = ?", "admin").
-		Where("pid = ?", pid).
 		Where("status = ?", 1).
 		Order("sort asc,id asc").
 		Select("name", "id", "pid").
-		Find(&menus)
+		Find(&list).Error
 
-	if len(menus) == 0 {
-		return list
-	}
-
-	for _, v := range menus {
-		item := &treeselect.TreeData{
-			Value: v.Id,
-			Title: v.Name,
-		}
-
-		children := model.FindTreeSelectNode(v.Id)
-		if len(children) > 0 {
-			item.Children = children
-		}
-
-		list = append(list, item)
-	}
-
-	return list
+	return list, err
 }
 
-// 获取Tree组件数据
-func (model *Menu) Tree() (list []*tree.TreeData, Error error) {
-	list = append(list, model.FindTreeNode(0)...)
-
-	return list, nil
-}
-
-// 递归获取Tree组件数据
-func (model *Menu) FindTreeNode(pid int) (list []*tree.TreeData) {
-	menus := []Menu{}
-	db.Client.
-		Where("guard_name = ?", "admin").
-		Where("pid = ?", pid).
-		Where("status = ?", 1).
-		Order("sort asc,id asc").
-		Select("name", "id", "pid").
-		Find(&menus)
-
-	if len(menus) == 0 {
-		return list
+// 获取菜单列表携带根节点
+func (model *Menu) GetListWithRoot() (menus []*Menu, Error error) {
+	list, err := model.GetList()
+	if err != nil {
+		return list, err
 	}
 
-	for _, v := range menus {
-		item := &tree.TreeData{
-			Key:   v.Id,
-			Title: v.Name,
-		}
+	list = append(list, &Menu{Id: 0, Pid: -1, Name: "根节点"})
 
-		children := model.FindTreeNode(v.Id)
-		if len(children) > 0 {
-			item.Children = children
-		}
-
-		list = append(list, item)
-	}
-
-	return list
+	return list, err
 }
 
 // 递归获取父数据
