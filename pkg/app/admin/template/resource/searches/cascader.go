@@ -7,7 +7,7 @@ import (
 
 type Cascader struct {
 	Search
-	CascaderOptions []*cascader.Option
+	CascaderOptions []cascader.Option
 }
 
 // 初始化模板
@@ -18,9 +18,9 @@ func (p *Cascader) TemplateInit(ctx *builder.Context) interface{} {
 }
 
 // 设置Option
-func (p *Cascader) Option(label string, value interface{}) *cascader.Option {
+func (p *Cascader) Option(label string, value interface{}) cascader.Option {
 
-	return &cascader.Option{
+	return cascader.Option{
 		Value: value,
 		Label: label,
 	}
