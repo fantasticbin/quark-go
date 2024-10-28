@@ -9,6 +9,7 @@ import (
 
 type RadioField struct {
 	searches.Radio
+	RadioOptions []radio.Option
 }
 
 // 下拉框

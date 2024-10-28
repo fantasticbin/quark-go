@@ -9,6 +9,7 @@ import (
 
 type SelectField struct {
 	searches.Select
+	SelectOptions []selectfield.Option
 }
 
 // 下拉框

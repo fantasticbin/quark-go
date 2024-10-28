@@ -9,6 +9,7 @@ import (
 
 type CascaderField struct {
 	searches.Cascader
+	CascaderOptions []cascader.Option
 }
 
 // 下拉框

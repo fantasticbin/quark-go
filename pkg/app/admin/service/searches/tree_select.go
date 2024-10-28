@@ -9,6 +9,7 @@ import (
 
 type TreeSelectField struct {
 	searches.TreeSelect
+	TreeSelectOptions []treeselect.TreeData
 }
 
 // 树形下拉框
