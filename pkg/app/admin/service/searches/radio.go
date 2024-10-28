@@ -1,7 +1,6 @@
 package searches
 
 import (
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/component/form/fields/radio"
 	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/template/resource/searches"
 	"github.com/quarkcloudio/quark-go/v3/pkg/builder"
 	"gorm.io/gorm"
@@ -12,12 +11,11 @@ type RadioField struct {
 }
 
 // 下拉框
-func Radio(column string, name string, options []radio.Option) *RadioField {
+func Radio(column string, name string) *RadioField {
 	field := &RadioField{}
 
 	field.Column = column
 	field.Name = name
-	field.RadioOptions = options
 
 	return field
 }

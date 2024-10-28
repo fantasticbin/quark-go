@@ -1,7 +1,6 @@
 package searches
 
 import (
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/component/form/fields/treeselect"
 	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/template/resource/searches"
 	"github.com/quarkcloudio/quark-go/v3/pkg/builder"
 	"gorm.io/gorm"
@@ -12,12 +11,11 @@ type TreeSelectField struct {
 }
 
 // 树形下拉框
-func TreeSelect(column string, name string, options []treeselect.TreeData) *TreeSelectField {
+func TreeSelect(column string, name string) *TreeSelectField {
 	field := &TreeSelectField{}
 
 	field.Column = column
 	field.Name = name
-	field.TreeSelectOptions = options
 
 	return field
 }

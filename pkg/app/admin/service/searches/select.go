@@ -1,7 +1,6 @@
 package searches
 
 import (
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/component/form/fields/selectfield"
 	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/template/resource/searches"
 	"github.com/quarkcloudio/quark-go/v3/pkg/builder"
 	"gorm.io/gorm"
@@ -12,12 +11,11 @@ type SelectField struct {
 }
 
 // 下拉框
-func Select(column string, name string, options []selectfield.Option) *SelectField {
+func Select(column string, name string) *SelectField {
 	field := &SelectField{}
 
 	field.Column = column
 	field.Name = name
-	field.SelectOptions = options
 
 	return field
 }
