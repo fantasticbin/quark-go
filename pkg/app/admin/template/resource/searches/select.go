@@ -32,26 +32,3 @@ func (p *Select) Options(ctx *builder.Context) interface{} {
 func (p *Select) Load(ctx *builder.Context) map[string]string {
 	return nil
 }
-
-//	[]selectfield.Option{
-//			{Value: 1, Label: "新闻"},
-//			{Value: 2, Label: "音乐"},
-//			{Value: 3, Label: "体育"},
-//		}
-//
-// 或者
-//
-// SetOptions(options, "label_name", "value_name")
-func (p *Select) SetOptions(options ...interface{}) *Select {
-	if len(options) == 1 {
-		getOptions, ok := options[0].([]selectfield.Option)
-		if ok {
-			p.SelectOptions = getOptions
-			return p
-		}
-	}
-	if len(options) == 3 {
-		p.SelectOptions = selectfield.New().ListToOptions(options[0], options[1].(string), options[2].(string))
-	}
-	return p
-}
