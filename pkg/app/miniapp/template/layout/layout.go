@@ -37,8 +37,15 @@ func (p *Template) Footer(ctx *builder.Context) interface{} {
 
 // 表单数据
 func (p *Template) Render(ctx *builder.Context) error {
-	header := p.Header(ctx)
-	footer := p.Footer(ctx)
+	// 头部
+	header := ctx.Template.(interface {
+		Header(ctx *builder.Context) interface{}
+	}).Header(ctx)
+
+	// footer
+	footer := ctx.Template.(interface {
+		Footer(ctx *builder.Context) interface{}
+	}).Footer(ctx)
 	return ctx.JSON(200, map[string]interface{}{
 		"header": header,
 		"footer": footer,
