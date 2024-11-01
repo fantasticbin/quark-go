@@ -24,9 +24,6 @@ type Resourcer interface {
 	// 页面是否携带返回Icon
 	GetBackIcon() bool
 
-	// 获取分页配置
-	GetPerPage() interface{}
-
 	// 获取表单页Form实例
 	GetForm() *form.Component
 
@@ -56,6 +53,12 @@ type Resourcer interface {
 
 	// 获取轮询数据
 	GetTablePolling() int
+
+	// 列表页列表数据转换为树形结构
+	GetTableListToTree() interface{}
+
+	// 获取分页配置
+	GetPerPage() interface{}
 
 	// 获取全局排序规则
 	GetQueryOrder() string

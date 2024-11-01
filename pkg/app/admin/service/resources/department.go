@@ -29,11 +29,14 @@ func (p *Department) Init(ctx *builder.Context) interface{} {
 	// 模型
 	p.Model = &model.Department{}
 
-	// 分页
-	p.PerPage = false
+	// 列表页数据转换成树
+	p.TableListToTree = true
 
 	// 默认排序
 	p.IndexQueryOrder = "sort asc, id asc"
+
+	// 分页
+	p.PerPage = false
 
 	return p
 }

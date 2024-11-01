@@ -35,7 +35,6 @@ type Template struct {
 	Title                  string                 // 页面标题
 	SubTitle               string                 // 页面子标题
 	BackIcon               bool                   // 页面是否携带返回Icon
-	PerPage                interface{}            // 列表页分页配置
 	Form                   *form.Component        // 表单页Form实例
 	Table                  *table.Component       // 列表页Table实例
 	TableSearch            *table.Search          // 列表Table组件中的搜索实例
@@ -46,6 +45,8 @@ type Template struct {
 	TableActionColumnTitle string                 // 列表页表格行为列显示文字，既字段的列名
 	TableActionColumnWidth int                    // 列表页表格行为列的宽度
 	TablePolling           int                    // 列表页表格是否轮询数据
+	TableListToTree        interface{}            // 列表页数据转换为树形结构, true 或者 map[string]interface{}{"pkName": "id",""pidName": "pid","childrenName": "children","rootId":0}
+	PerPage                interface{}            // 列表页分页配置
 	QueryOrder             string                 // 全局排序规则
 	IndexQueryOrder        string                 // 列表页排序规则
 	ExportQueryOrder       string                 // 导出数据排序规则
@@ -141,11 +142,6 @@ func (p *Template) GetBackIcon() bool {
 	return p.BackIcon
 }
 
-// 获取分页配置
-func (p *Template) GetPerPage() interface{} {
-	return p.PerPage
-}
-
 // 获取表单页Form实例
 func (p *Template) GetForm() *form.Component {
 	return p.Form
@@ -194,6 +190,16 @@ func (p *Template) GetTableActionColumnWidth() int {
 // 获取轮询数据
 func (p *Template) GetTablePolling() int {
 	return p.TablePolling
+}
+
+// 获取分页配置
+func (p *Template) GetPerPage() interface{} {
+	return p.PerPage
+}
+
+// 列表页列表数据转换为树形结构
+func (p *Template) GetTableListToTree() interface{} {
+	return p.TableListToTree
 }
 
 // 获取全局排序规则

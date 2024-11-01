@@ -5,7 +5,36 @@ import (
 
 	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/template/resource/types"
 	"github.com/quarkcloudio/quark-go/v3/pkg/builder"
+	"github.com/quarkcloudio/quark-go/v3/pkg/utils/lister"
 )
+
+// 列表页数据转换成树
+func (p *Template) IndexTableListToTree(ctx *builder.Context, list []interface{}) []interface{} {
+	data := ctx.AllQuerys()
+	if search, ok := data["search"].(map[string]interface{}); ok && search != nil {
+		return list
+	}
+
+	pkName := "id"
+	pidName := "pid"
+	childrenName := "children"
+	rootId := 0
+	template := ctx.Template.(types.Resourcer)
+	tableListToTree := template.GetTableListToTree()
+	if isTableListToTree, ok := tableListToTree.(bool); ok {
+		if !isTableListToTree {
+			return list
+		}
+	} else if tableListToTreeMap, ok := tableListToTree.(map[string]interface{}); ok {
+		pkName = tableListToTreeMap["pkName"].(string)
+		pidName = tableListToTreeMap["pidName"].(string)
+		childrenName = tableListToTreeMap["childrenName"].(string)
+		rootId = tableListToTreeMap["rootId"].(int)
+	}
+
+	tree, _ := lister.ListToTree(list, pkName, pidName, childrenName, rootId)
+	return tree
+}
 
 // 列表页表格主体
 func (p *Template) IndexTableExtraRender(ctx *builder.Context) interface{} {
@@ -67,6 +96,12 @@ func (p *Template) IndexComponentRender(ctx *builder.Context, data interface{}) 
 	// 列表页搜索栏
 	indexSearches := p.IndexSearches(ctx)
 
+	// 是否开启树形表格
+	tableListToTree := template.GetTableListToTree()
+	if tableListToTree != nil {
+		data = p.IndexTableListToTree(ctx, data.([]interface{}))
+	}
+
 	// 表格组件
 	table = table.
 		SetPolling(int(tablePolling)).
@@ -92,8 +127,9 @@ func (p *Template) IndexComponentRender(ctx *builder.Context, data interface{}) 
 		perPage := data.(map[string]interface{})["perPage"]
 		total := data.(map[string]interface{})["total"]
 		items := data.(map[string]interface{})["items"]
-
-		component = table.SetPagination(current.(int), perPage.(int), int(total.(int64)), 1).SetDatasource(items)
+		component = table.
+			SetPagination(current.(int), perPage.(int), int(total.(int64)), 1).
+			SetDatasource(items)
 	}
 
 	return component

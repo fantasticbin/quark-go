@@ -10,7 +10,6 @@ import (
 	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/service/searches"
 	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/template/resource"
 	"github.com/quarkcloudio/quark-go/v3/pkg/builder"
-	"github.com/quarkcloudio/quark-go/v3/pkg/utils/lister"
 	"gorm.io/gorm"
 )
 
@@ -27,11 +26,14 @@ func (p *Menu) Init(ctx *builder.Context) interface{} {
 	// 模型
 	p.Model = &model.Menu{}
 
-	// 分页
-	p.PerPage = false
+	// 列表页数据转换成树
+	p.TableListToTree = true
 
 	// 默认排序
 	p.QueryOrder = "sort asc"
+
+	// 分页
+	p.PerPage = false
 
 	return p
 }
@@ -166,21 +168,6 @@ func (p *Menu) Actions(ctx *builder.Context) []interface{} {
 		actions.FormBack(),
 		actions.FormExtraBack(),
 	}
-}
-
-// 列表页面显示前回调
-func (p *Menu) BeforeIndexShowing(ctx *builder.Context, list []map[string]interface{}) []interface{} {
-	data := ctx.AllQuerys()
-	if search, ok := data["search"].(map[string]interface{}); ok && search != nil {
-		result := []interface{}{}
-		for _, v := range list {
-			result = append(result, v)
-		}
-		return result
-	}
-	// 转换成树形表格
-	tree, _ := lister.ListToTree(list, "id", "pid", "children", 0)
-	return tree
 }
 
 // 编辑页面显示前回调
