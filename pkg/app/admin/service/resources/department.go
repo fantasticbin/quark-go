@@ -8,7 +8,6 @@ import (
 	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/service/searches"
 	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/template/resource"
 	"github.com/quarkcloudio/quark-go/v3/pkg/builder"
-	"github.com/quarkcloudio/quark-go/v3/pkg/utils/lister"
 )
 
 type Department struct {
@@ -106,19 +105,4 @@ func (p *Department) Actions(ctx *builder.Context) []interface{} {
 		actions.BatchDisable(),
 		actions.BatchEnable(),
 	}
-}
-
-// 列表页面显示前回调
-func (p *Department) BeforeIndexShowing(ctx *builder.Context, list []map[string]interface{}) []interface{} {
-	data := ctx.AllQuerys()
-	if search, ok := data["search"].(map[string]interface{}); ok && search != nil {
-		result := []interface{}{}
-		for _, v := range list {
-			result = append(result, v)
-		}
-		return result
-	}
-	// 转换成树形表格
-	tree, _ := lister.ListToTree(list, "id", "pid", "children", 0)
-	return tree
 }
