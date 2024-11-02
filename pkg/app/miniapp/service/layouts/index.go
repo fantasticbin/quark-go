@@ -18,14 +18,10 @@ func (p *Index) Footer(ctx *builder.Context) interface{} {
 			tabbar.NewItem().
 				SetIcon("home").
 				SetTabTitle("首页").
-				SetTo("/pages/index/index"),
-			tabbar.NewItem().
-				SetIcon("category").
-				SetTabTitle("分类").
-				SetTo("/pages/category/category"),
+				SetTo("/pages/index"),
 			tabbar.NewItem().
 				SetIcon("my").
 				SetTabTitle("我的").
-				SetTo("/pages/my/my"),
+				SetTo("/pages/my"),
 		})
 }
