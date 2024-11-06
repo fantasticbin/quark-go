@@ -58,6 +58,10 @@ func (p *User) IndexQuery(ctx *builder.Context, query *gorm.DB) *gorm.DB {
 		return query
 	}
 
+	if len(ids) == 0 {
+		return query
+	}
+
 	for _, v := range ids {
 		childrenIds := (&model.Department{}).GetChildrenIds(v)
 		ids = append(ids, childrenIds...)
