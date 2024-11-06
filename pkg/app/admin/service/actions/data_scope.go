@@ -69,7 +69,7 @@ func (p *DataScopeAction) Fields(ctx *builder.Context) []interface{} {
 		field.Text("name", "名称").SetDisabled(true),
 
 		field.Select("data_scope", "数据范围").SetOptions(
-			[]*selectfield.Option{
+			[]selectfield.Option{
 				{
 					Label: "全部数据权限",
 					Value: 1,
