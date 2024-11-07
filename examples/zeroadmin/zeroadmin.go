@@ -6,14 +6,14 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/quarkcloudio/quark-go/v3"
+	"github.com/quarkcloudio/quark-go/v3/adapter/zeroadapter"
+	"github.com/quarkcloudio/quark-go/v3/app/admin"
 	"github.com/quarkcloudio/quark-go/v3/examples/zeroadmin/internal/config"
 	"github.com/quarkcloudio/quark-go/v3/examples/zeroadmin/internal/handler"
 	"github.com/quarkcloudio/quark-go/v3/examples/zeroadmin/internal/svc"
-	"github.com/quarkcloudio/quark-go/v3/pkg/adapter/zeroadapter"
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/install"
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/middleware"
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/service"
-	"github.com/quarkcloudio/quark-go/v3/pkg/builder"
+	"github.com/quarkcloudio/quark-go/v3/template/admin/install"
+	"github.com/quarkcloudio/quark-go/v3/template/admin/middleware"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
@@ -42,17 +42,17 @@ func main() {
 	dsn := "root:fK7xPGJi1gJfIief@tcp(127.0.0.1:3306)/quarkgo?charset=utf8&parseTime=True&loc=Local"
 
 	// 配置资源
-	config := &builder.Config{
+	config := &quark.Config{
 		AppKey:    "123456",
-		Providers: service.Providers,
-		DBConfig: &builder.DBConfig{
+		Providers: admin.Providers,
+		DBConfig: &quark.DBConfig{
 			Dialector: mysql.Open(dsn),
 			Opts:      &gorm.Config{},
 		},
 	}
 
 	// 创建对象
-	b := builder.New(config)
+	b := quark.New(config)
 
 	// 初始化安装
 	install.Handle()

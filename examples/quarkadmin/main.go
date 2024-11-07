@@ -1,13 +1,13 @@
 package main
 
 import (
-	admininstall "github.com/quarkcloudio/quark-go/v3/pkg/app/admin/install"
-	adminmiddleware "github.com/quarkcloudio/quark-go/v3/pkg/app/admin/middleware"
-	adminservice "github.com/quarkcloudio/quark-go/v3/pkg/app/admin/service"
-	miniappmiddleware "github.com/quarkcloudio/quark-go/v3/pkg/app/miniapp/middleware"
-	miniappservice "github.com/quarkcloudio/quark-go/v3/pkg/app/miniapp/service"
-	toolservice "github.com/quarkcloudio/quark-go/v3/pkg/app/tool/service"
-	"github.com/quarkcloudio/quark-go/v3/pkg/builder"
+	"github.com/quarkcloudio/quark-go/v3"
+	adminservice "github.com/quarkcloudio/quark-go/v3/app/admin"
+	miniappservice "github.com/quarkcloudio/quark-go/v3/app/miniapp"
+	toolservice "github.com/quarkcloudio/quark-go/v3/app/tool"
+	admininstall "github.com/quarkcloudio/quark-go/v3/template/admin/install"
+	adminmiddleware "github.com/quarkcloudio/quark-go/v3/template/admin/middleware"
+	miniappmiddleware "github.com/quarkcloudio/quark-go/v3/template/miniapp/middleware"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -30,14 +30,14 @@ func main() {
 	providers = append(providers, toolservice.Providers...)
 
 	// 配置资源
-	config := &builder.Config{
+	config := &quark.Config{
 		AppKey:    "123456",
 		Providers: providers,
-		DBConfig: &builder.DBConfig{
+		DBConfig: &quark.DBConfig{
 			Dialector: mysql.Open(dsn),
 			Opts:      &gorm.Config{},
 		},
-		// RedisConfig: &builder.RedisConfig{
+		// RedisConfig: &quark.RedisConfig{
 		// 	Host:     "127.0.0.1",
 		// 	Port:     "6379",
 		// 	Password: "",
@@ -46,7 +46,7 @@ func main() {
 	}
 
 	// 实例化对象
-	b := builder.New(config)
+	b := quark.New(config)
 
 	// WEB根目录
 	b.Static("/", "./web/app")
@@ -61,7 +61,7 @@ func main() {
 	b.Use(miniappmiddleware.Handle)
 
 	// 响应Get请求
-	b.GET("/", func(ctx *builder.Context) error {
+	b.GET("/", func(ctx *quark.Context) error {
 		return ctx.String(200, "Hello World!")
 	})
 

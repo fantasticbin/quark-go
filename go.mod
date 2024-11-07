@@ -3,10 +3,6 @@ module github.com/quarkcloudio/quark-go/v3
 go 1.18
 
 require (
-	github.com/alibabacloud-go/darabonba-openapi v0.2.1
-	github.com/alibabacloud-go/dysmsapi-20170525/v2 v2.0.18
-	github.com/alibabacloud-go/tea v1.2.1
-	github.com/alibabacloud-go/tea-utils v1.4.5
 	github.com/casbin/casbin/v2 v2.71.1
 	github.com/cloudwego/hertz v0.6.6
 	github.com/dchest/captcha v1.0.0
@@ -19,7 +15,6 @@ require (
 	github.com/gofiber/fiber/v2 v2.47.0
 	github.com/gogf/gf/v2 v2.7.4
 	github.com/golang-jwt/jwt/v4 v4.5.0
-	github.com/parnurzeal/gorequest v0.2.16
 	github.com/redis/go-redis/v9 v9.0.3
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/xuri/excelize/v2 v2.7.1
@@ -36,7 +31,6 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
-	github.com/elazarl/goproxy v0.0.0-20240909085733-6741dbfc16a1 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
@@ -52,6 +46,7 @@ require (
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
+	github.com/gopherjs/gopherjs v0.0.0-20200217142428-fce0ec30dd00 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
 	github.com/gorilla/websocket v1.5.1 // indirect
@@ -81,6 +76,7 @@ require (
 	github.com/savsgio/dictpool v0.0.0-20221023140959-7bf2e61cea94 // indirect
 	github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
+	github.com/smartystreets/assertions v1.1.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
@@ -115,13 +111,7 @@ require (
 )
 
 require (
-	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.4 // indirect
-	github.com/alibabacloud-go/debug v1.0.0 // indirect
-	github.com/alibabacloud-go/endpoint-util v1.1.1 // indirect
-	github.com/alibabacloud-go/openapi-util v0.1.0 // indirect
-	github.com/alibabacloud-go/tea-xml v1.1.3 // indirect
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.7+incompatible
-	github.com/aliyun/credentials-go v1.3.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/bytedance/go-tagexpr/v2 v2.9.8 // indirect
 	github.com/bytedance/gopkg v0.0.0-20230531144706-a12972768317 // indirect
@@ -156,13 +146,11 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/nyaruka/phonenumbers v1.1.7 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.3 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
-	github.com/tjfoc/gmsm v1.4.1 // indirect
 	github.com/tklauser/go-sysconf v0.3.11 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
@@ -180,7 +168,6 @@ require (
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gorm.io/driver/sqlite v1.5.2
-	moul.io/http2curl v1.0.0 // indirect
 )
 
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0

@@ -62,7 +62,7 @@ func main() {
 	b.Use(middleware.Handle)
 
 	// 响应Get请求
-	b.GET("/", func(ctx *builder.Context) error {
+	b.GET("/", func(ctx *quark.Context) error {
 		return ctx.String(200, "Hello World!")
 	})
 

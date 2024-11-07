@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/install"
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/middleware"
-	adminservice "github.com/quarkcloudio/quark-go/v3/pkg/app/admin/service"
-	toolservice "github.com/quarkcloudio/quark-go/v3/pkg/app/tool/service"
-	"github.com/quarkcloudio/quark-go/v3/pkg/builder"
+	"github.com/quarkcloudio/quark-go/v3"
+	adminservice "github.com/quarkcloudio/quark-go/v3/app/admin"
+	toolservice "github.com/quarkcloudio/quark-go/v3/app/tool"
+	"github.com/quarkcloudio/quark-go/v3/template/admin/install"
+	"github.com/quarkcloudio/quark-go/v3/template/admin/middleware"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -25,17 +25,17 @@ func main() {
 	providers = append(providers, toolservice.Providers...)
 
 	// 配置资源
-	config := &builder.Config{
+	config := &quark.Config{
 		AppKey:    "123456",
 		Providers: providers,
-		DBConfig: &builder.DBConfig{
+		DBConfig: &quark.DBConfig{
 			Dialector: sqlite.Open(dsn),
 			Opts:      &gorm.Config{},
 		},
 	}
 
 	// 实例化对象
-	b := builder.New(config)
+	b := quark.New(config)
 
 	// WEB根目录
 	b.Static("/", "./web/app")
@@ -47,7 +47,7 @@ func main() {
 	b.Use(middleware.Handle)
 
 	// 响应Get请求
-	b.GET("/", func(ctx *builder.Context) error {
+	b.GET("/", func(ctx *quark.Context) error {
 		return ctx.String(200, "Hello World!")
 	})
 

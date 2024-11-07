@@ -1,8 +1,8 @@
 package resources
 
 import (
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/template/resource"
-	"github.com/quarkcloudio/quark-go/v3/pkg/builder"
+	"github.com/quarkcloudio/quark-go/v3"
+	"github.com/quarkcloudio/quark-go/v3/template/admin/resource"
 )
 
 type Demo struct {
@@ -10,7 +10,7 @@ type Demo struct {
 }
 
 // 初始化
-func (p *Demo) Init(ctx *builder.Context) interface{} {
+func (p *Demo) Init(ctx *quark.Context) interface{} {
 
 	// 初始化模板
 	p.TemplateInit(ctx)
@@ -19,19 +19,19 @@ func (p *Demo) Init(ctx *builder.Context) interface{} {
 }
 
 // 字段
-func (p *Demo) Fields(ctx *builder.Context) []interface{} {
+func (p *Demo) Fields(ctx *quark.Context) []interface{} {
 
 	return []interface{}{}
 }
 
 // 搜索
-func (p *Demo) Searches(ctx *builder.Context) []interface{} {
+func (p *Demo) Searches(ctx *quark.Context) []interface{} {
 
 	return []interface{}{}
 }
 
 // 行为
-func (p *Demo) Actions(ctx *builder.Context) []interface{} {
+func (p *Demo) Actions(ctx *quark.Context) []interface{} {
 
 	return []interface{}{}
 }
