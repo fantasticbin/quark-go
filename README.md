@@ -23,43 +23,39 @@ go mod init demo/hello
 package main
 
 import (
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/service"
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/install"
-	"github.com/quarkcloudio/quark-go/v3/pkg/app/admin/middleware"
-	"github.com/quarkcloudio/quark-go/v3/pkg/builder"
-	"github.com/glebarez/sqlite"
+	"github.com/quarkcloudio/quark-go/v3"
+	adminservice "github.com/quarkcloudio/quark-go/v3/app/admin"
+	adminmodule "github.com/quarkcloudio/quark-go/v3/template/admin"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 func main() {
 
 	// 配置资源
-	config := &builder.Config{
-
+	config := &quark.Config{
 		// JWT加密密串
 		AppKey:    "123456",
-
 		// 加载服务
-		Providers: service.Providers,
-
+		Providers: adminservice.Providers,
 		// 数据库配置
-		DBConfig: &builder.DBConfig{
+		DBConfig: &quark.DBConfig{
 			Dialector: sqlite.Open("./data.db"),
 			Opts:      &gorm.Config{},
 		},
 	}
 
 	// 实例化对象
-	b := builder.New(config)
+	b := quark.New(config)
 
 	// WEB根目录
 	b.Static("/", "./web/app")
 
-	// 自动构建数据库、拉取静态文件
-	install.Handle()
+	// 初始化安装
+	adminmodule.Install()
 
-	// 后台中间件
-	b.Use(middleware.Handle)
+	// 中间件
+	b.Use(adminmodule.Middleware)
 
 	// 响应Get请求
 	b.GET("/", func(ctx *quark.Context) error {
