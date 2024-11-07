@@ -5,9 +5,8 @@ import (
 	adminservice "github.com/quarkcloudio/quark-go/v3/app/admin"
 	miniappservice "github.com/quarkcloudio/quark-go/v3/app/miniapp"
 	toolservice "github.com/quarkcloudio/quark-go/v3/app/tool"
-	admininstall "github.com/quarkcloudio/quark-go/v3/template/admin/install"
-	adminmiddleware "github.com/quarkcloudio/quark-go/v3/template/admin/middleware"
-	miniappmiddleware "github.com/quarkcloudio/quark-go/v3/template/miniapp/middleware"
+	adminmodule "github.com/quarkcloudio/quark-go/v3/template/admin"
+	miniappmodule "github.com/quarkcloudio/quark-go/v3/template/miniapp"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -51,14 +50,14 @@ func main() {
 	// WEB根目录
 	b.Static("/", "./web/app")
 
-	// 构建管理后台数据库
-	admininstall.Handle()
+	// 初始化安装
+	adminmodule.Install()
 
-	// 管理后台中间件
-	b.Use(adminmiddleware.Handle)
+	// 中间件
+	b.Use(adminmodule.Middleware)
 
 	// MiniApp中间件
-	b.Use(miniappmiddleware.Handle)
+	b.Use(miniappmodule.Middleware)
 
 	// 响应Get请求
 	b.GET("/", func(ctx *quark.Context) error {

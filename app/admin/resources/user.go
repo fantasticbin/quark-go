@@ -8,6 +8,7 @@ import (
 	"github.com/quarkcloudio/quark-go/v3/app/admin/actions"
 	"github.com/quarkcloudio/quark-go/v3/app/admin/searches"
 	"github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/form/fields/radio"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/form/rule"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/resource"
@@ -23,7 +24,7 @@ type User struct {
 func (p *User) Init(ctx *quark.Context) interface{} {
 
 	// 列表
-	departments, _ := (&model.Department{}).GetList()
+	departments, _ := service.NewDepartmentService().GetList()
 
 	// 树形下拉框
 	p.TableTreeBar.
@@ -63,7 +64,7 @@ func (p *User) IndexQuery(ctx *quark.Context, query *gorm.DB) *gorm.DB {
 	}
 
 	for _, v := range ids {
-		childrenIds := (&model.Department{}).GetChildrenIds(v)
+		childrenIds := service.NewDepartmentService().GetChildrenIds(v)
 		ids = append(ids, childrenIds...)
 	}
 
@@ -75,10 +76,10 @@ func (p *User) Fields(ctx *quark.Context) []interface{} {
 	field := &resource.Field{}
 
 	// 角色列表
-	roles, _ := (&model.Role{}).List()
+	roles, _ := service.NewRoleService().List()
 
 	// 列表
-	departments, _ := (&model.Department{}).GetList()
+	departments, _ := service.NewDepartmentService().GetList()
 
 	// 职位列表
 	positions, _ := (&model.Position{}).List()
@@ -201,7 +202,7 @@ func (p *User) Actions(ctx *quark.Context) []interface{} {
 // 编辑页面显示前回调
 func (p *User) BeforeEditing(ctx *quark.Context, data map[string]interface{}) map[string]interface{} {
 	delete(data, "password")
-	roles, err := (&model.CasbinRule{}).GetUserRoles(data["id"].(int))
+	roles, err := service.NewCasbinService().GetUserRoles(data["id"].(int))
 	if err == nil {
 		roleIds := []int{}
 		for _, role := range roles {
@@ -232,7 +233,7 @@ func (p *User) AfterSaved(ctx *quark.Context, id int, data map[string]interface{
 				roleId := int(v.(float64))
 				ids = append(ids, roleId)
 			}
-			err := (&model.CasbinRule{}).AddUserRole(id, ids)
+			err := service.NewCasbinService().AddUserRole(id, ids)
 			if err != nil {
 				return err
 			}

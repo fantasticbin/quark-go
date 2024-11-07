@@ -3,7 +3,8 @@ package logins
 import (
 	"github.com/dchest/captcha"
 	"github.com/quarkcloudio/quark-go/v3"
-	"github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/dto/request"
+	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/form/rule"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/icon"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/message"
@@ -16,17 +17,6 @@ import (
 
 type Index struct {
 	login.Template
-}
-
-type Captcha struct {
-	Id    string `json:"id" form:"id"`
-	Value string `json:"value" form:"value"`
-}
-
-type LoginRequest struct {
-	Username string  `json:"username" form:"username"`
-	Password string  `json:"password" form:"password"`
-	Captcha  Captcha `json:"captcha" form:"captcha"`
 }
 
 // 初始化
@@ -91,7 +81,7 @@ func (p *Index) Fields(ctx *quark.Context) []interface{} {
 
 // 登录方法
 func (p *Index) Handle(ctx *quark.Context) error {
-	loginRequest := &LoginRequest{}
+	loginRequest := &request.LoginReq{}
 	if err := ctx.Bind(loginRequest); err != nil {
 		return ctx.JSON(200, message.Error(err.Error()))
 	}
@@ -109,7 +99,7 @@ func (p *Index) Handle(ctx *quark.Context) error {
 		return ctx.JSON(200, message.Error("用户名或密码不能为空"))
 	}
 
-	adminInfo, err := (&model.User{}).GetInfoByUsername(loginRequest.Username)
+	adminInfo, err := service.NewUserService().GetInfoByUsername(loginRequest.Username)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return ctx.JSON(200, message.Error("用户不存在"))
@@ -123,10 +113,10 @@ func (p *Index) Handle(ctx *quark.Context) error {
 	}
 
 	// 更新登录信息
-	(&model.User{}).UpdateLastLogin(adminInfo.Id, ctx.ClientIP(), datetime.Now())
+	service.NewUserService().UpdateLastLogin(adminInfo.Id, ctx.ClientIP(), datetime.Now())
 
 	// 获取token字符串
-	tokenString, err := ctx.JwtToken((&model.User{}).GetAdminClaims(adminInfo))
+	tokenString, err := ctx.JwtToken(service.NewUserService().GetAdminClaims(adminInfo))
 	if err != nil {
 		return ctx.JSON(200, message.Error(err.Error()))
 	}

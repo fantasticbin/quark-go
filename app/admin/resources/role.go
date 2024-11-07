@@ -7,6 +7,7 @@ import (
 	"github.com/quarkcloudio/quark-go/v3/app/admin/actions"
 	"github.com/quarkcloudio/quark-go/v3/app/admin/searches"
 	"github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/form/rule"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/resource"
 	"gorm.io/gorm"
@@ -37,7 +38,7 @@ func (p *Role) Init(ctx *quark.Context) interface{} {
 // 字段
 func (p *Role) Fields(ctx *quark.Context) []interface{} {
 	field := &resource.Field{}
-	treeData, _ := (&model.Menu{}).GetList()
+	treeData, _ := service.NewMenuService().GetList()
 
 	return []interface{}{
 		field.ID("id", "ID"),
@@ -84,7 +85,7 @@ func (p *Role) BeforeEditing(ctx *quark.Context, data map[string]interface{}) ma
 	id := ctx.Query("id")
 	idInt, err := strconv.Atoi(id.(string))
 	if err == nil {
-		menus, _ := (&model.CasbinRule{}).GetRoleMenus(idInt)
+		menus, _ := service.NewCasbinService().GetRoleMenus(idInt)
 		ids := []int{}
 		for _, v := range menus {
 			ids = append(ids, v.Id)
@@ -103,7 +104,7 @@ func (p *Role) AfterSaved(ctx *quark.Context, id int, data map[string]interface{
 				menuId := int(v.(float64))
 				ids = append(ids, menuId)
 			}
-			err = (&model.CasbinRule{}).AddMenuAndPermissionToRole(id, ids)
+			err = service.NewCasbinService().AddMenuAndPermissionToRole(id, ids)
 			if err != nil {
 				return err
 			}

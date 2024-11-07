@@ -5,6 +5,7 @@ import (
 	"github.com/quarkcloudio/quark-go/v3/app/admin/actions"
 	"github.com/quarkcloudio/quark-go/v3/app/admin/searches"
 	"github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/resource"
 )
 
@@ -34,7 +35,7 @@ func (p *Picture) Fields(ctx *quark.Context) []interface{} {
 	return []interface{}{
 		field.ID("id", "ID"),
 		field.Text("path", "显示", func() interface{} {
-			return "<img src='" + (&model.Picture{}).GetPath(p.Field["id"]) + "' width=50 height=50 />"
+			return "<img src='" + service.NewPictureService().GetPath(p.Field["id"]) + "' width=50 height=50 />"
 		}),
 		field.Text("name", "名称").SetEllipsis(true),
 		field.Text("size", "大小").SetSorter(true),

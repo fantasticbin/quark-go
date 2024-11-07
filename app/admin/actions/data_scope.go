@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/quarkcloudio/quark-go/v3"
-	"github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/form/fields/selectfield"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/form/rule"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/message"
@@ -61,7 +61,7 @@ func (p *DataScopeAction) Init(ctx *quark.Context) interface{} {
 func (p *DataScopeAction) Fields(ctx *quark.Context) []interface{} {
 	field := &resource.Field{}
 
-	departments, _ := (&model.Department{}).GetList()
+	departments, _ := service.NewDepartmentService().GetList()
 
 	return []interface{}{
 		field.Hidden("id", "ID"),
@@ -115,12 +115,12 @@ func (p *DataScopeAction) Data(ctx *quark.Context) map[string]interface{} {
 		return nil
 	}
 
-	role, err := (&model.Role{}).GetInfoById(idInt)
+	role, err := service.NewRoleService().GetInfoById(idInt)
 	if err != nil {
 		return nil
 	}
 
-	departmentIds, err := (&model.CasbinRule{}).GetRoleDepartmentIds(idInt)
+	departmentIds, err := service.NewCasbinService().GetRoleDepartmentIds(idInt)
 	if err != nil {
 		return nil
 	}
@@ -147,7 +147,7 @@ func (p *DataScopeAction) Handle(ctx *quark.Context, query *gorm.DB) error {
 	}
 
 	// 更新角色数据权限
-	err = (&model.Role{}).UpdateRoleDataScope(form.Id, form.DataScope, form.DepartmentIds)
+	err = service.NewRoleService().UpdateRoleDataScope(form.Id, form.DataScope, form.DepartmentIds)
 	if err != nil {
 		return ctx.JSON(200, message.Error(err.Error()))
 	}

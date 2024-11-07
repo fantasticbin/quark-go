@@ -2,7 +2,6 @@ package model
 
 import (
 	"github.com/quarkcloudio/quark-go/v3/dal/db"
-	"github.com/quarkcloudio/quark-go/v3/template/admin/component/form/fields/checkbox"
 	"github.com/quarkcloudio/quark-go/v3/utils/datetime"
 )
 
@@ -23,50 +22,4 @@ func (model *Role) Seeder() {
 	}
 
 	db.Client.Create(&seeders)
-}
-
-// 通过ID获取角色信息
-func (model *Role) GetInfoById(id interface{}) (role *Role, Error error) {
-	err := db.Client.Where("id = ?", id).First(&role).Error
-
-	return role, err
-}
-
-// 更新角色数据范围
-func (model *Role) UpdateRoleDataScope(roleId int, dataScope int, departmentIds []int) (err error) {
-	err = db.Client.Model(model).Where("id = ?", roleId).Update("data_scope", dataScope).Error
-	if err == nil {
-		if dataScope == 2 {
-			(&CasbinRule{}).AddDepartmentToRole(roleId, departmentIds)
-		} else {
-			(&CasbinRule{}).RemoveRoleDepartments(roleId)
-		}
-	}
-
-	return err
-}
-
-// 获取角色列表
-func (model *Role) List() (list []checkbox.Option, Error error) {
-	roles := []Role{}
-	err := db.Client.Find(&roles).Error
-	if err != nil {
-		return list, err
-	}
-
-	for _, v := range roles {
-		list = append(list, checkbox.Option{
-			Label: v.Name,
-			Value: v.Id,
-		})
-	}
-
-	return list, nil
-}
-
-// 通过id集合获取列表
-func (model *Role) GetListByIds(ids interface{}) (roles []Role, Error error) {
-	err := db.Client.Where("id in ?", ids).Find(&roles).Error
-
-	return roles, err
 }

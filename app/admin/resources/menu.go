@@ -7,6 +7,7 @@ import (
 	"github.com/quarkcloudio/quark-go/v3/app/admin/actions"
 	"github.com/quarkcloudio/quark-go/v3/app/admin/searches"
 	"github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/form/fields/radio"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/form/rule"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/resource"
@@ -43,10 +44,10 @@ func (p *Menu) Fields(ctx *quark.Context) []interface{} {
 	field := &resource.Field{}
 
 	// 权限列表
-	permissions, _ := (&model.Permission{}).DataSource()
+	permissions, _ := service.NewPermissionService().DataSource()
 
 	// 菜单列表
-	menus, _ := (&model.Menu{}).GetListWithRoot()
+	menus, _ := service.NewMenuService().GetListWithRoot()
 
 	return []interface{}{
 		field.Hidden("id", "ID"),                 // 列表读取且不展示的字段
@@ -176,7 +177,7 @@ func (p *Menu) BeforeEditing(ctx *quark.Context, data map[string]interface{}) ma
 	idInt, err := strconv.Atoi(id.(string))
 	if id != "" && err == nil {
 		permissionIds := []int{}
-		permissions, err := (&model.CasbinRule{}).GetMenuPermissions(idInt)
+		permissions, err := service.NewCasbinService().GetMenuPermissions(idInt)
 		if err == nil {
 			for _, v := range permissions {
 				permissionIds = append(permissionIds, v.Id)
@@ -190,7 +191,7 @@ func (p *Menu) BeforeEditing(ctx *quark.Context, data map[string]interface{}) ma
 // 保存后回调
 func (p *Menu) AfterSaved(ctx *quark.Context, id int, data map[string]interface{}, result *gorm.DB) error {
 	if data["permission_ids"] != nil {
-		err := (&model.CasbinRule{}).AddMenuPermission(id, data["permission_ids"])
+		err := service.NewCasbinService().AddMenuPermission(id, data["permission_ids"])
 		if err != nil {
 			return err
 		}

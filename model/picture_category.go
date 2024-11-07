@@ -1,7 +1,5 @@
 package model
 
-import "github.com/quarkcloudio/quark-go/v3/dal/db"
-
 // 字段
 type PictureCategory struct {
 	Id          int    `json:"id" gorm:"autoIncrement"`
@@ -10,24 +8,4 @@ type PictureCategory struct {
 	Title       string `json:"title" gorm:"size:255;not null"`
 	Sort        int    `json:"sort" gorm:"size:11;default:0"`
 	Description string `json:"description" gorm:"size:255"`
-}
-
-// 获取列表
-func (model *PictureCategory) GetAuthList(appKey string, tokenString string) (list []PictureCategory, Error error) {
-	categorys := []PictureCategory{}
-
-	adminInfo, err := (&User{}).GetAuthUser(appKey, tokenString)
-	if err != nil {
-		return categorys, err
-	}
-
-	err = db.Client.
-		Where("obj_type = ?", "ADMIN").
-		Where("obj_id", adminInfo.Id).
-		Find(&categorys).Error
-	if err != nil {
-		return categorys, err
-	}
-
-	return categorys, nil
 }

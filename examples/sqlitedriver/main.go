@@ -4,8 +4,7 @@ import (
 	"github.com/quarkcloudio/quark-go/v3"
 	adminservice "github.com/quarkcloudio/quark-go/v3/app/admin"
 	toolservice "github.com/quarkcloudio/quark-go/v3/app/tool"
-	"github.com/quarkcloudio/quark-go/v3/template/admin/install"
-	"github.com/quarkcloudio/quark-go/v3/template/admin/middleware"
+	adminmodule "github.com/quarkcloudio/quark-go/v3/template/admin"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -40,11 +39,11 @@ func main() {
 	// WEB根目录
 	b.Static("/", "./web/app")
 
-	// 自动构建数据库、拉取静态文件
-	install.Handle()
+	// 初始化安装
+	adminmodule.Install()
 
-	// 后台中间件
-	b.Use(middleware.Handle)
+	// 中间件
+	b.Use(adminmodule.Middleware)
 
 	// 响应Get请求
 	b.GET("/", func(ctx *quark.Context) error {

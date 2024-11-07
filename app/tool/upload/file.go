@@ -6,6 +6,7 @@ import (
 
 	"github.com/quarkcloudio/quark-go/v3"
 	"github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/tool/upload"
 )
 
@@ -51,7 +52,7 @@ func (p *File) BeforeHandle(ctx *quark.Context, fileSystem *quark.FileSystem) (*
 		return fileSystem, nil, err
 	}
 
-	getFileInfo, _ := (&model.File{}).GetInfoByHash(fileHash)
+	getFileInfo, _ := service.NewFileService().GetInfoByHash(fileHash)
 	if err != nil {
 		return fileSystem, nil, err
 	}
@@ -80,11 +81,11 @@ func (p *File) AfterHandle(ctx *quark.Context, result *quark.FileInfo) error {
 
 	// 重写url
 	if driver == quark.LocalDriver {
-		result.Url = (&model.File{}).GetPath(result.Url)
+		result.Url = service.NewFileService().GetPath(result.Url)
 	}
 
 	// 插入数据库
-	id, err := (&model.File{}).InsertGetId(model.File{
+	id, err := service.NewFileService().InsertGetId(model.File{
 		Name:   result.Name,
 		Size:   result.Size,
 		Ext:    result.Ext,

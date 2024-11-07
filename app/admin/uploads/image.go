@@ -10,6 +10,7 @@ import (
 
 	"github.com/quarkcloudio/quark-go/v3"
 	"github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/message"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/upload"
 )
@@ -58,7 +59,7 @@ func (p *Image) GetList(ctx *quark.Context) error {
 	searchDateEnd := ctx.Query("pictureSearchDate[1]", "")
 	currentPage, _ := strconv.Atoi(page.(string))
 
-	pictures, total, err := (&model.Picture{}).GetListBySearch(
+	pictures, total, err := service.NewPictureService().GetListBySearch(
 		ctx.Engine.GetConfig().AppKey,
 		ctx.Token(),
 		categoryId, searchName,
@@ -77,7 +78,7 @@ func (p *Image) GetList(ctx *quark.Context) error {
 		"total":          total,
 	}
 
-	categorys, err := (&model.PictureCategory{}).GetAuthList(ctx.Engine.GetConfig().AppKey, ctx.Token())
+	categorys, err := service.NewPictureCategoryService().GetAuthList(ctx.Engine.GetConfig().AppKey, ctx.Token())
 	if err != nil {
 		return ctx.JSON(200, message.Error(err.Error()))
 	}
@@ -101,7 +102,7 @@ func (p *Image) Delete(ctx *quark.Context) error {
 		return ctx.JSON(200, message.Error("参数错误！"))
 	}
 
-	err := (&model.Picture{}).DeleteById(data["id"])
+	err := service.NewPictureService().DeleteById(data["id"])
 	if err != nil {
 		return ctx.JSON(200, message.Error(err.Error()))
 	}
@@ -124,7 +125,7 @@ func (p *Image) Crop(ctx *quark.Context) error {
 		return ctx.JSON(200, message.Error("参数错误！"))
 	}
 
-	pictureInfo, err := (&model.Picture{}).GetInfoById(data["id"])
+	pictureInfo, err := service.NewPictureService().GetInfoById(data["id"])
 	if err != nil {
 		return ctx.JSON(200, message.Error(err.Error()))
 	}
@@ -132,7 +133,7 @@ func (p *Image) Crop(ctx *quark.Context) error {
 		return ctx.JSON(200, message.Error("文件不存在"))
 	}
 
-	adminInfo, err := (&model.User{}).GetAuthUser(ctx.Engine.GetConfig().AppKey, ctx.Token())
+	adminInfo, err := service.NewUserService().GetAuthUser(ctx.Engine.GetConfig().AppKey, ctx.Token())
 	if err != nil {
 		return ctx.JSON(200, message.Error(err.Error()))
 	}
@@ -227,7 +228,7 @@ func (p *Image) Crop(ctx *quark.Context) error {
 	}
 	if fileInfo != nil {
 		// 更新数据库
-		(&model.Picture{}).UpdateById(pictureInfo.Id, model.Picture{
+		service.NewPictureService().UpdateById(pictureInfo.Id, model.Picture{
 			ObjType: "ADMIN",
 			ObjId:   adminInfo.Id,
 			Name:    fileInfo.Name,
@@ -253,11 +254,11 @@ func (p *Image) Crop(ctx *quark.Context) error {
 
 	// 重写url
 	if driver == quark.LocalDriver {
-		result.Url = (&model.Picture{}).GetPath(result.Url)
+		result.Url = service.NewPictureService().GetPath(result.Url)
 	}
 
 	// 更新数据库
-	(&model.Picture{}).UpdateById(pictureInfo.Id, model.Picture{
+	service.NewPictureService().UpdateById(pictureInfo.Id, model.Picture{
 		ObjType: "ADMIN",
 		ObjId:   adminInfo.Id,
 		Name:    result.Name,
@@ -281,7 +282,7 @@ func (p *Image) BeforeHandle(ctx *quark.Context, fileSystem *quark.FileSystem) (
 		return fileSystem, nil, err
 	}
 
-	pictureInfo, err := (&model.Picture{}).GetInfoByHash(fileHash)
+	pictureInfo, err := service.NewPictureService().GetInfoByHash(fileHash)
 	if err != nil {
 		return fileSystem, nil, err
 	}
@@ -312,16 +313,16 @@ func (p *Image) AfterHandle(ctx *quark.Context, result *quark.FileInfo) error {
 
 	// 重写url
 	if driver == quark.LocalDriver {
-		result.Url = (&model.Picture{}).GetPath(result.Url)
+		result.Url = service.NewPictureService().GetPath(result.Url)
 	}
 
-	adminInfo, err := (&model.User{}).GetAuthUser(ctx.Engine.GetConfig().AppKey, ctx.Token())
+	adminInfo, err := service.NewUserService().GetAuthUser(ctx.Engine.GetConfig().AppKey, ctx.Token())
 	if err != nil {
 		return ctx.JSON(200, message.Error(err.Error()))
 	}
 
 	// 插入数据库
-	id, err := (&model.Picture{}).InsertGetId(model.Picture{
+	id, err := service.NewPictureService().InsertGetId(model.Picture{
 		ObjType: "ADMIN",
 		ObjId:   adminInfo.Id,
 		Name:    result.Name,

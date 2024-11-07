@@ -20,9 +20,6 @@ type Config struct {
 	UpdatedAt datetime.Datetime `json:"updated_at"`
 }
 
-// 存储配置
-var webConfig = make(map[string]string)
-
 // 配置表
 func (model *Config) Seeder() {
 	seeders := []Config{
@@ -44,22 +41,4 @@ func (model *Config) Seeder() {
 	}
 
 	db.Client.Create(&seeders)
-}
-
-// 刷新配置
-func (model *Config) Refresh() {
-	configs := []Config{}
-	db.Client.Where("status", 1).Find(&configs)
-	for _, config := range configs {
-		webConfig[config.Name] = config.Value
-	}
-}
-
-// 获取配置信息
-func (model *Config) GetValue(key string) string {
-	if len(webConfig) == 0 {
-		model.Refresh()
-	}
-
-	return webConfig[key]
 }

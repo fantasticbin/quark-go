@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/quarkcloudio/quark-go/v3"
-	"github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/message"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/resource/actions"
 	"gorm.io/gorm"
@@ -72,7 +72,7 @@ func (p *DeleteRoleAction) Handle(ctx *quark.Context, query *gorm.DB) error {
 			}
 
 			// 清理casbin里的角色
-			(&model.CasbinRule{}).RemoveRoleMenuAndPermissions(idInt)
+			service.NewCasbinService().RemoveRoleMenuAndPermissions(idInt)
 		}
 	} else {
 		idInt, err := strconv.Atoi(id.(string))
@@ -81,7 +81,7 @@ func (p *DeleteRoleAction) Handle(ctx *quark.Context, query *gorm.DB) error {
 		}
 
 		// 清理casbin里的角色
-		(&model.CasbinRule{}).RemoveRoleMenuAndPermissions(idInt)
+		service.NewCasbinService().RemoveRoleMenuAndPermissions(idInt)
 	}
 
 	return ctx.JSON(200, message.Success("操作成功"))

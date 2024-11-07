@@ -7,6 +7,7 @@ import (
 	"github.com/quarkcloudio/quark-go/v3/app/admin/actions"
 	"github.com/quarkcloudio/quark-go/v3/dal/db"
 	"github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/form/fields/radio"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/form/rule"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/message"
@@ -72,7 +73,7 @@ func (p *Account) Actions(ctx *quark.Context) []interface{} {
 // 表单显示前回调
 func (p *Account) BeforeFormShowing(ctx *quark.Context) map[string]interface{} {
 	data := map[string]interface{}{}
-	adminInfo, _ := (&model.User{}).GetAuthUser(ctx.Engine.GetConfig().AppKey, ctx.Token())
+	adminInfo, _ := service.NewUserService().GetAuthUser(ctx.Engine.GetConfig().AppKey, ctx.Token())
 	db.Client.
 		Model(p.Model).
 		Where("id = ?", adminInfo.Id).
@@ -90,7 +91,7 @@ func (p *Account) FormHandle(ctx *quark.Context, query *gorm.DB, data map[string
 		data["password"] = hash.Make(data["password"].(string))
 	}
 	// 获取登录管理员信息
-	adminInfo, err := (&model.User{}).GetAuthUser(ctx.Engine.GetConfig().AppKey, ctx.Token())
+	adminInfo, err := service.NewUserService().GetAuthUser(ctx.Engine.GetConfig().AppKey, ctx.Token())
 	if err != nil {
 		return ctx.JSON(200, message.Error(err.Error()))
 	}

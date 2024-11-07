@@ -8,8 +8,7 @@ import (
 	"github.com/quarkcloudio/quark-go/v3"
 	"github.com/quarkcloudio/quark-go/v3/adapter/fiberadapter"
 	"github.com/quarkcloudio/quark-go/v3/app/admin"
-	"github.com/quarkcloudio/quark-go/v3/template/admin/install"
-	"github.com/quarkcloudio/quark-go/v3/template/admin/middleware"
+	adminmodule "github.com/quarkcloudio/quark-go/v3/template/admin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -55,10 +54,10 @@ func main() {
 	b := quark.New(config)
 
 	// 初始化安装
-	install.Handle()
+	adminmodule.Install()
 
 	// 中间件
-	b.Use(middleware.Handle)
+	b.Use(adminmodule.Middleware)
 
 	// 适配fiber
 	fiberadapter.Adapter(b, app)

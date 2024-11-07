@@ -9,7 +9,7 @@ import (
 
 	"github.com/quarkcloudio/quark-go/v3"
 	"github.com/quarkcloudio/quark-go/v3/dal/db"
-	models "github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/message"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/space"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/tpl"
@@ -62,7 +62,7 @@ func (p *ImportRequest) Handle(ctx *quark.Context, indexRoute string) error {
 	model := db.Client.Model(modelInstance)
 
 	// 获取导入数据
-	importData, err := (&models.File{}).GetExcelData(fileId)
+	importData, err := service.NewFileService().GetExcelData(fileId)
 	if err != nil {
 		return ctx.JSON(200, message.Error(err.Error()))
 	}

@@ -5,7 +5,7 @@ import (
 
 	"github.com/quarkcloudio/quark-go/v3"
 	"github.com/quarkcloudio/quark-go/v3/dal/db"
-	"github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/action"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/footer"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/layout"
@@ -216,16 +216,16 @@ func (p *Template) GetRightMenus() []interface{} {
 // 获取当前登录用户菜单
 func (p *Template) GetMenus(ctx *quark.Context) (list interface{}, err error) {
 	config := ctx.Engine.GetConfig()
-	admin := &model.User{}
+	userService := service.NewUserService()
 
 	// 获取登录管理员信息
-	adminInfo, err := admin.GetAuthUser(config.AppKey, ctx.Token())
+	adminInfo, err := userService.GetAuthUser(config.AppKey, ctx.Token())
 	if err != nil {
 		return nil, err
 	}
 
 	// 获取管理员菜单
-	return admin.GetMenuListById(adminInfo.Id)
+	return userService.GetMenuListById(adminInfo.Id)
 }
 
 // 组件渲染

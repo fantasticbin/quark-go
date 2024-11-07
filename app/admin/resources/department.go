@@ -5,6 +5,7 @@ import (
 	"github.com/quarkcloudio/quark-go/v3/app/admin/actions"
 	"github.com/quarkcloudio/quark-go/v3/app/admin/searches"
 	"github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/form/rule"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/table"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/resource"
@@ -45,7 +46,7 @@ func (p *Department) Fields(ctx *quark.Context) []interface{} {
 	field := &resource.Field{}
 
 	// 列表
-	departments, _ := (&model.Department{}).GetList()
+	departments, _ := service.NewDepartmentService().GetList()
 
 	return []interface{}{
 		field.Hidden("id", "ID"),                 // 列表读取且不展示的字段
