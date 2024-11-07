@@ -7,6 +7,7 @@ import (
 	"github.com/quarkcloudio/quark-go/v3"
 	"github.com/quarkcloudio/quark-go/v3/app/admin/logins"
 	"github.com/quarkcloudio/quark-go/v3/model"
+	"github.com/quarkcloudio/quark-go/v3/service"
 )
 
 // 中间件
@@ -83,7 +84,7 @@ func Handle(ctx *quark.Context) error {
 	}
 
 	// 记录操作日志
-	(&model.ActionLog{}).InsertGetId(model.ActionLog{
+	service.NewActionLogService().InsertGetId(model.ActionLog{
 		ObjectId: adminInfo.Id,
 		Url:      ctx.Path(),
 		Ip:       ctx.ClientIP(),

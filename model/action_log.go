@@ -1,7 +1,6 @@
 package model
 
 import (
-	"github.com/quarkcloudio/quark-go/v3/dal/db"
 	"github.com/quarkcloudio/quark-go/v3/utils/datetime"
 )
 
@@ -17,11 +16,4 @@ type ActionLog struct {
 	Status    int               `json:"status" gorm:"size:1;not null;default:1"`
 	CreatedAt datetime.Datetime `json:"created_at"`
 	UpdatedAt datetime.Datetime `json:"updated_at"`
-}
-
-// 插入数据
-func (model *ActionLog) InsertGetId(data ActionLog) (id int, Error error) {
-	err := db.Client.Create(&data).Error
-
-	return data.Id, err
 }
