@@ -26,7 +26,7 @@ import (
 	"github.com/quarkcloudio/quark-go/v3"
 	adminservice "github.com/quarkcloudio/quark-go/v3/app/admin"
 	adminmodule "github.com/quarkcloudio/quark-go/v3/template/admin"
-	"gorm.io/driver/mysql"
+	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
 
