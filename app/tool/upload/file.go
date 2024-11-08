@@ -53,9 +53,6 @@ func (p *File) BeforeHandle(ctx *quark.Context, fileSystem *quark.FileSystem) (*
 	}
 
 	getFileInfo, _ := service.NewFileService().GetInfoByHash(fileHash)
-	if err != nil {
-		return fileSystem, nil, err
-	}
 	if getFileInfo.Id != 0 {
 		fileInfo := &quark.FileInfo{
 			Name: getFileInfo.Name,
@@ -80,7 +77,7 @@ func (p *File) AfterHandle(ctx *quark.Context, result *quark.FileInfo) error {
 		FieldByName("Driver").String()
 
 	// 重写url
-	if driver == quark.LocalDriver {
+	if driver == quark.LocalStorage {
 		result.Url = service.NewFileService().GetPath(result.Url)
 	}
 

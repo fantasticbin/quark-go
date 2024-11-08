@@ -25,9 +25,9 @@ import (
 )
 
 var (
-	OssDriver   = "oss"
-	LocalDriver = "local"
-	MinioDriver = "minio"
+	OssStorage   = "oss"
+	LocalStorage = "local"
+	MinioStorage = "minio"
 )
 
 // OSS配置
@@ -195,7 +195,7 @@ type FileSystem struct {
 // 初始化对象
 func NewStorage(config *StorageConfig) *FileSystem {
 	if config.Driver == "" {
-		config.Driver = LocalDriver
+		config.Driver = LocalStorage
 	}
 
 	return &FileSystem{
@@ -625,14 +625,14 @@ func (p *FileSystem) Save() (fileInfo *FileInfo, err error) {
 	var fileUrl = ""
 
 	switch p.Config.Driver {
-	case LocalDriver:
+	case LocalStorage:
 		err = p.SaveToLocal()
 		if err != nil {
 			return fileInfo, err
 		}
 
 		fileUrl = p.Config.SavePath + p.Config.SaveName
-	case OssDriver:
+	case OssStorage:
 		err = p.SaveToOSS()
 		if err != nil {
 			return fileInfo, err
@@ -643,7 +643,7 @@ func (p *FileSystem) Save() (fileInfo *FileInfo, err error) {
 		} else {
 			fileUrl = "//" + p.Config.OSSConfig.BucketName + "." + p.Config.OSSConfig.Endpoint + "/" + p.Config.SavePath + p.Config.SaveName
 		}
-	case MinioDriver:
+	case MinioStorage:
 		err = p.SaveToMinio()
 		if err != nil {
 			return fileInfo, err

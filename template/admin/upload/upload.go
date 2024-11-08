@@ -38,7 +38,7 @@ func (p *Template) TemplateInit(ctx *quark.Context) interface{} {
 	p.DB = db.Client
 
 	// 默认本地上传
-	p.Driver = quark.LocalDriver
+	p.Driver = quark.LocalStorage
 
 	return p
 }
