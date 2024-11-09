@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/quarkcloudio/quark-go/v3"
+	"github.com/quarkcloudio/quark-go/v3/dto/response"
 	"github.com/quarkcloudio/quark-go/v3/model"
 	"github.com/quarkcloudio/quark-go/v3/service"
 	"github.com/quarkcloudio/quark-go/v3/template/admin/component/message"
@@ -107,18 +108,14 @@ func (p *File) AfterHandle(ctx *quark.Context, result *quark.FileInfo) error {
 		return ctx.JSON(200, message.Error(err.Error()))
 	}
 
-	return ctx.JSON(200, message.Success(
-		"上传成功",
-		"",
-		map[string]interface{}{
-			"id":          id,
-			"contentType": result.ContentType,
-			"ext":         result.Ext,
-			"hash":        result.Hash,
-			"name":        result.Name,
-			"path":        result.Path,
-			"size":        result.Size,
-			"url":         result.Url,
-		},
-	))
+	return ctx.JSON(200, message.Success("上传成功", "", response.UploadFileResp{
+		Id:          id,
+		ContentType: result.ContentType,
+		Ext:         result.Ext,
+		Hash:        result.Hash,
+		Name:        result.Name,
+		Path:        result.Path,
+		Size:        result.Size,
+		Url:         result.Url,
+	}))
 }
