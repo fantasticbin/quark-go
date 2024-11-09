@@ -85,15 +85,11 @@ func (p *Image) GetList(ctx *quark.Context) error {
 		return ctx.JSON(200, message.Error(err.Error()))
 	}
 
-	return ctx.JSON(200, message.Success(
-		"获取成功",
-		"",
-		map[string]interface{}{
-			"pagination": pagination,
-			"lists":      pictures,
-			"categorys":  categorys,
-		},
-	))
+	return ctx.JSON(200, message.Success("获取成功", "", map[string]interface{}{
+		"pagination": pagination,
+		"lists":      pictures,
+		"categorys":  categorys,
+	}))
 }
 
 // 图片删除
