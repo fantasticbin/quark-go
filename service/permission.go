@@ -9,7 +9,7 @@ import (
 
 type PermissionService struct{}
 
-// / 初始化
+// 初始化
 func NewPermissionService() *PermissionService {
 	return &PermissionService{}
 }

@@ -13,7 +13,7 @@ import (
 
 type UserService struct{}
 
-// / 初始化
+// 初始化
 func NewUserService() *UserService {
 	return &UserService{}
 }

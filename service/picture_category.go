@@ -7,7 +7,7 @@ import (
 
 type PictureCategoryService struct{}
 
-// / 初始化
+// 初始化
 func NewPictureCategoryService() *PictureCategoryService {
 	return &PictureCategoryService{}
 }

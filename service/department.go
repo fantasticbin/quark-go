@@ -7,7 +7,7 @@ import (
 
 type DepartmentService struct{}
 
-// / 初始化
+// 初始化
 func NewDepartmentService() *DepartmentService {
 	return &DepartmentService{}
 }

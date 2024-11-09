@@ -13,7 +13,7 @@ import (
 
 type FileService struct{}
 
-// / 初始化
+// 初始化
 func NewFileService() *FileService {
 	return &FileService{}
 }

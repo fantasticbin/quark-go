@@ -12,7 +12,7 @@ import (
 
 type MenuService struct{}
 
-// / 初始化
+// 初始化
 func NewMenuService() *MenuService {
 	return &MenuService{}
 }

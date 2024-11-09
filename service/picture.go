@@ -12,7 +12,7 @@ import (
 
 type PictureService struct{}
 
-// / 初始化
+// 初始化
 func NewPictureService() *PictureService {
 	return &PictureService{}
 }

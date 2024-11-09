@@ -16,7 +16,7 @@ import (
 
 type CasbinService struct{}
 
-// / 初始化
+// 初始化
 func NewCasbinService() *CasbinService {
 	return &CasbinService{}
 }

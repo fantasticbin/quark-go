@@ -10,7 +10,7 @@ type ConfigService struct{}
 // 存储配置
 var webConfig = make(map[string]string)
 
-// / 初始化
+// 初始化
 func NewConfigService() *ConfigService {
 	return &ConfigService{}
 }

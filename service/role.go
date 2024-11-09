@@ -8,7 +8,7 @@ import (
 
 type RoleService struct{}
 
-// / 初始化
+// 初始化
 func NewRoleService() *RoleService {
 	return &RoleService{}
 }

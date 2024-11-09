@@ -7,7 +7,7 @@ import (
 
 type ActionLogService struct{}
 
-// / 初始化
+// 初始化
 func NewActionLogService() *ActionLogService {
 	return &ActionLogService{}
 }
